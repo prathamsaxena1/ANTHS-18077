@@ -1,16 +1,30 @@
 {
-  "name": "backend",
+  "name": "hotel-booking-api",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "NODE_ENV=development nodemon server.js",
-    "dev:debug": "NODE_ENV=development LOG_LEVEL=debug nodemon server.js",
-    "log:clear": "rm -rf ./logs/*",
-    "log:watch": "tail -f ./logs/combined.log"
+    "dev": "nodemon server.js",
+    "dev:debug": "nodemon --inspect server.js",
+    "dev:verbose": "nodemon --verbose server.js",
+    "dev:prod": "cross-env NODE_ENV=production nodemon server.js",
+    "dev:test": "cross-env NODE_ENV=test nodemon server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "seed": "node utils/seedDB.js",
+    "seed:prod": "cross-env NODE_ENV=production node utils/seedDB.js",
+    "seed:clear": "node utils/seedDB.js --clear",
+    "db:migrate": "node utils/migration.js",
+    "dev:local": "cross-env NODE_ENV=development nodemon server.js --config nodemon.json",
+    "dev:staging": "cross-env NODE_ENV=staging nodemon server.js",
+    "dev:with-logs": "cross-env NODE_ENV=development LOG_LEVEL=debug nodemon server.js",
+    "dev:with-mongo": "concurrently \"mongod\" \"nodemon server.js\"",
+    "dev:trace": "cross-env NODE_ENV=development LOG_LEVEL=debug MONGO_DEBUG=true nodemon --trace-warnings server.js"
   },
   "keywords": [],
   "author": "",
@@ -32,5 +46,12 @@
     "uuid": "^11.1.0",
     "winston": "^3.17.0",
     "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.28.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10"
   }
 }

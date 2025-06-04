@@ -1,0 +1,30 @@
+{
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules",
+      "public",
+      "logs",
+      "uploads"
+    ],
+    "verbose": true,
+    "execMap": {
+      "js": "node"
+    },
+    "watch": [
+      "server.js",
+      "app.js",
+      "config/",
+      "controllers/",
+      "models/",
+      "routes/",
+      "middleware/",
+      "utils/",
+      "services/",
+      "validation/"
+    ],
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "ext": "js,json"
+  }
