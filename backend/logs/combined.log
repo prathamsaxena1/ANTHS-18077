@@ -7,3 +7,64 @@
 2025-06-04 16:25:43 [[32minfo[39m]: [32mMongoDB connected[39m
 2025-06-04 16:25:43 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
 2025-06-04 16:25:43 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:32:46 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:32:47 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:32:47 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:32:47 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:32:48 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:32:49 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:32:49 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:32:49 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:02 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:03 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:04 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:04 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:04 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:14 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:15 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:15 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:15 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:17 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:18 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:18 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:18 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:30 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:30 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:30 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:30 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:37 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:38 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:38 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:38 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:51 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:52 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:52 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:52 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:33:53 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:33:53 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:33:53 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:33:53 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:34:09 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:34:09 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:34:09 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:34:09 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:34:10 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:34:11 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:34:11 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:34:11 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:34:24 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:34:25 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:34:25 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:34:25 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:34:26 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:34:26 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:34:26 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:34:26 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:34:39 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:34:40 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:34:40 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:34:40 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:34:53 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:34:54 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:34:54 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:34:54 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m

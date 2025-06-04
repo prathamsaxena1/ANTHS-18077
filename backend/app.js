@@ -1,16 +1,49 @@
-// In server.js or app.js
+// app.js
+
+const express = require('express');
+const path = require('path');
+const setupMiddleware = require('./middleware');
 const config = require('./config/config');
+const authRoutes = require('./routes/authRoutes');
+const hotelRoutes = require('./routes/hotelRoutes');
+const roomRoutes = require('./routes/roomRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 
-// Connect to the database
-mongoose.connect(config.mongoUri);
+// Create Express app
+const app = express();
 
-// Set up JWT authentication
-app.use(jwt({ secret: config.jwtSecret, algorithms: ['HS256'] }));
+// Apply middleware
+setupMiddleware(app);
 
-// Configure email provider
-const transporter = nodemailer.createTransport(config.emailConfig);
-
-// Set API port
-app.listen(config.port, () => {
-  console.log(`Server running in ${config.env} mode on port ${config.port}`);
+// Set security HTTP headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
 });
+
+// API Routes
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/hotels', hotelRoutes);
+app.use('/api/v1/rooms', roomRoutes);
+app.use('/api/v1/bookings', bookingRoutes);
+
+// Serve static assets in production
+if (config.env === 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+}
+
+// Handle 404 routes
+app.all('*', (req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+});
+
+module.exports = app;
