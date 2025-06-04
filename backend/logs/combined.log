@@ -2,3 +2,8 @@
 2025-06-04 16:25:13 [[32minfo[39m]: [32mMongoDB connected[39m
 2025-06-04 16:25:13 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
 2025-06-04 16:25:13 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:25:38 [[32minfo[39m]: [32mSIGINT received. Starting graceful shutdown...[39m
+2025-06-04 16:25:42 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:25:43 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:25:43 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:25:43 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
