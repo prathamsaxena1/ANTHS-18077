@@ -107,3 +107,67 @@
 2025-06-04 16:45:15 [[31merror[39m]: [31mOriginal Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.kafjjgg.mongodb.net[39m
 2025-06-04 16:45:15 [[31merror[39m]: [31mMongoDB error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.kafjjgg.mongodb.net[39m
 2025-06-04 16:45:15 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:46:08 [[32minfo[39m]: [32mSIGINT received. Starting graceful shutdown...[39m
+2025-06-04 16:46:12 [[32minfo[39m]: [32mConnecting to MongoDB...[39m
+2025-06-04 16:46:14 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:46:14 [[32minfo[39m]: [32mMongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017[39m
+2025-06-04 16:46:14 [[32minfo[39m]: [32mServer running in development mode on port 8000[39m
+2025-06-04 16:47:44 [[33mwarn[39m]: [33mMongoDB disconnected. Will attempt to reconnect...[39m
+2025-06-04 16:47:44 [[32minfo[39m]: [32mMongoDB connected[39m
+2025-06-04 16:47:44 [[32minfo[39m]: [32mReconnected to MongoDB[39m
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:53:33:5333"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:53:34:5334"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:53:34:5334"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:53:34:5334"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:53:58:5358"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:53:59:5359"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:53:59:5359"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:53:59:5359"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:53:59:5359"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:00:540"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:00:540"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:00:540"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:54:15:5415"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:16:5416"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:16:5416"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:16:5416"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:54:16:5416"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:17:5417"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:17:5417"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:17:5417"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:54:29:5429"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:29:5429"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:29:5429"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:29:5429"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:54:30:5430"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:31:5431"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:31:5431"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:31:5431"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:54:42:5442"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:42:5442"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:42:5442"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:42:5442"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:54:45:5445"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:54:46:5446"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:54:46:5446"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:54:46:5446"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:55:02:552"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:55:03:553"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:55:03:553"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:55:03:553"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:55:20:5520"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:55:21:5521"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:55:21:5521"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:55:21:5521"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:55:22:5522"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:55:22:5522"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:55:22:5522"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:55:22:5522"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:55:30:5530"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:55:30:5530"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:55:30:5530"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:55:30:5530"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 16:55:42:5542"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 16:55:43:5543"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 16:55:43:5543"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 16:55:43:5543"}
