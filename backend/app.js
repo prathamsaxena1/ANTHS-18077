@@ -3,26 +3,33 @@
 const express = require('express');
 const configureLogging = require('./config/logging');
 const setupMiddleware = require('./middleware');
+const versionControl = require('./middleware/versionControl');
+const apiRoutes = require('./routes');
 const notFoundHandler = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
-const authRoutes = require('./routes/authRoutes');
-const hotelRoutes = require('./routes/hotelRoutes');
-const roomRoutes = require('./routes/roomRoutes');
-const bookingRoutes = require('./routes/bookingRoutes');
 
 // Create Express app
 const app = express();
 
-// Configure logging - IMPORTANT: this should be before other middleware
+// Configure logging
 configureLogging(app);
 
-// Apply other middleware
+// Apply middleware
 setupMiddleware(app);
 
-// Handle 404 routes - must come after all routes
+// Version control middleware
+app.use('/api', versionControl);
+
+// API routes with versioning
+app.use('/api', apiRoutes);
+
+// API Documentation
+app.use('/docs', express.static('public/docs'));
+
+// Handle 404 routes
 app.use(notFoundHandler);
 
-// Global error handler - must come last
+// Global error handler
 app.use(errorHandler);
 
 module.exports = app;
