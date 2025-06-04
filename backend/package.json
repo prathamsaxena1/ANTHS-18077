@@ -12,5 +12,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express-mongo-sanitize": "^2.2.0",
+    "mongoose-autopopulate": "^1.1.0",
+    "mongoose-lean-virtuals": "^2.0.0",
+    "winston": "^3.17.0"
+  }
 }
