@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import v1Routes from './routes/v1/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import AppError from './utils/appError.js';
+const userRoutes = require('./routes/v1/userRoutes');
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.get('/api/health', (req, res) => {
 
 // API routes
 app.use('/api/v1', v1Routes);
+app.use('/api/v1/users', userRoutes);
 
 // Handle undefined routes
 app.all('*', (req, res, next) => {
