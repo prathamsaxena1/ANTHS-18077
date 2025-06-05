@@ -55,3 +55,21 @@
 {"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:37:10:3710"}
 {"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:37:10:3710"}
 {"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:37:10:3710"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:41:00:410"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:41:00:410"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:41:00:410"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:41:17:4117"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:41:17:4117"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:41:17:4117"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:42:05:425"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:05:425"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:05:425"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:42:15:4215"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:15:4215"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:15:4215"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:42:24:4224"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:24:4224"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:24:4224"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:42:35:4235"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:35:4235"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:42:35:4235"}

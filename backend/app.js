@@ -1,35 +1,34 @@
 // app.js
 
-const express = require('express');
-const configureLogging = require('./config/logging');
-const setupMiddleware = require('./middleware');
-const versionControl = require('./middleware/versionControl');
-const apiRoutes = require('./routes');
-const notFoundHandler = require('./middleware/notFound');
-const errorHandler = require('./middleware/errorHandler');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import v1Routes from './routes/v1/index.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
-// Create Express app
 const app = express();
 
-// Configure logging
-configureLogging(app);
+// Global middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-// Apply middleware
-setupMiddleware(app);
+// Development logging
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
-// Version control middleware
-app.use('/api', versionControl);
+// API routes
+app.use('/api/v1', v1Routes);
 
-// API routes with versioning
-app.use('/api', apiRoutes);
-
-// API Documentation
-app.use('/docs', express.static('public/docs'));
-
-// Handle 404 routes
-app.use(notFoundHandler);
+// Handle undefined routes
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
 
 // Global error handler
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

@@ -1,17 +1,13 @@
 // routes/v1/index.js
 
-const express = require('express');
-const hotelRoutes = require('./hotelRoutes');
-const roomRoutes = require('./roomRoutes');
-const bookingRoutes = require('./bookingRoutes');
-const authRoutes = require('./authRoutes');
+import express from 'express';
+import authRoutes from './authRoutes.js';
+// Import other route files as needed
 
 const router = express.Router();
 
-// Mount the resource routers
-router.use('/hotels', hotelRoutes);
-router.use('/rooms', roomRoutes);
-router.use('/bookings', bookingRoutes);
+// Mount routes
 router.use('/auth', authRoutes);
+// Mount other routes
 
-module.exports = router;
+export default router;
