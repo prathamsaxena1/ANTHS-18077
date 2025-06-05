@@ -1,71 +1,100 @@
-// middleware/auth.js
 
+// middleware/auth.js - Enhanced with permissions
 const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
+const asyncHandler = require('../utils/catchAsync');
+const ErrorResponse = require('../utils/errorResponse');
 const User = require('../models/User');
-const config = require('../config/config');
+const Hotel = require('../models/Hotel');
 
-// Protect routes - require authentication
-exports.protect = async (req, res, next) => {
+// Protect routes
+exports.protect = asyncHandler(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.token) {
+    token = req.cookies.token;
+  }
+
+  if (!token) {
+    return next(new ErrorResponse('Not authorized to access this route', 401));
+  }
+
   try {
-    let token;
-    
-    // Get token from Authorization header or cookies
-    if (
-      req.headers.authorization && 
-      req.headers.authorization.startsWith('Bearer')
-    ) {
-      // Extract token from "Bearer <token>"
-      token = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies.jwt) {
-      token = req.cookies.jwt;
-    }
-    
-    // Check if token exists
-    if (!token) {
-      return res.status(401).json({
-        status: 'error',
-        message: 'You are not logged in! Please log in to get access.'
-      });
-    }
-    
-    // Verify token
-    const decoded = await promisify(jwt.verify)(token, config.jwtSecret);
-    
-    // Check if user still exists
-    const currentUser = await User.findById(decoded.id);
-    if (!currentUser) {
-      return res.status(401).json({
-        status: 'error',
-        message: 'The user belonging to this token no longer exists.'
-      });
-    }
-    
-    // Check if user changed password after the token was issued
-    if (currentUser.changedPasswordAfter(decoded.iat)) {
-      return res.status(401).json({
-        status: 'error',
-        message: 'User recently changed password! Please log in again.'
-      });
-    }
-    
-    // Set user in req object
-    req.user = currentUser;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id);
     next();
   } catch (err) {
-    next(err);
+    return next(new ErrorResponse('Not authorized to access this route', 401));
   }
-};
+});
 
-// Restrict access to specific roles
-exports.restrictTo = (...roles) => {
+// Role-based authorization
+exports.authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
-        status: 'error',
-        message: 'You do not have permission to perform this action'
-      });
+      return next(
+        new ErrorResponse(
+          `User role ${req.user.role} is not authorized to access this route`,
+          403
+        )
+      );
     }
     next();
   };
 };
+
+// Permission-based authorization (more granular)
+exports.hasPermission = (permission) => {
+  return asyncHandler(async (req, res, next) => {
+    const hasAccess = await req.user.hasPermission(permission);
+    
+    if (!hasAccess) {
+      return next(
+        new ErrorResponse(
+          `User does not have permission: ${permission}`,
+          403
+        )
+      );
+    }
+    
+    next();
+  });
+};
+
+// Check if a user is the owner of a hotel
+exports.checkHotelOwnership = asyncHandler(async (req, res, next) => {
+  const hotel = await Hotel.findById(req.params.hotelId);
+  
+  if (!hotel) {
+    return next(
+      new ErrorResponse(`Hotel not found with id of ${req.params.hotelId}`, 404)
+    );
+  }
+  
+  // Admin bypass or ownership check
+  if (req.user.role === 'admin' || hotel.owner.toString() === req.user.id) {
+    next();
+  } else {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to modify this hotel`,
+        403
+      )
+    );
+  }
+});
+
+// Admin-only middleware
+exports.adminOnly = asyncHandler(async (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse('Only administrators can perform this action', 403)
+    );
+  }
+  
+  next();
+});
