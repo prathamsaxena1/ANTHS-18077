@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 });
 
 // Define PORT
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 // Connect to database and start server
 let server;

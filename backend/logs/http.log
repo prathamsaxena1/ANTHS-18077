@@ -109,3 +109,79 @@
 {"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 17:14:17:1417"}
 {"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-04 17:14:17:1417"}
 {"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 17:14:29:1429"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-04 17:14:34:1434"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-04 17:14:34:1434"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 17:14:34:1434"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 17:14:34:1434"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-04 17:14:34:1434"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:02:50:250"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-04 19:02:55:255"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-04 19:02:55:255"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 19:02:55:255"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 19:02:55:255"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-04 19:02:55:255"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:05:57:557"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 19:05:59:559"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 19:05:59:559"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 19:05:59:559"}
+{"level":"info","message":"SIGINT received. Starting graceful shutdown...","timestamp":"2025-06-04 19:08:33:833"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:08:34:834"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 19:08:35:835"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-02.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 19:08:35:835"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 19:08:35:835"}
+{"level":"info","message":"SIGINT received. Starting graceful shutdown...","timestamp":"2025-06-04 19:08:50:850"}
+{"level":"info","message":"Shutting down gracefully...","timestamp":"2025-06-04 19:08:50:850"}
+{"level":"info","message":"HTTP server closed","timestamp":"2025-06-04 19:08:50:850"}
+{"level":"info","message":"Closing MongoDB connection...","timestamp":"2025-06-04 19:08:50:850"}
+{"level":"info","message":"Disconnecting from MongoDB...","timestamp":"2025-06-04 19:08:50:850"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:18:38:1838"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-04 19:18:43:1843"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-04 19:18:43:1843"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 19:18:43:1843"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-04 19:18:43:1843"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-04 19:18:43:1843"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:19:26:1926"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 19:19:27:1927"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-00.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 19:19:27:1927"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 19:19:27:1927"}
+{"level":"info","message":"SIGINT received. Starting graceful shutdown...","timestamp":"2025-06-04 19:21:31:2131"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:23:20:2320"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 19:23:21:2321"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 19:23:21:2321"}
+{"level":"info","message":"Server running in development mode on port 8000","timestamp":"2025-06-04 19:23:21:2321"}
+{"level":"info","message":"SIGINT received. Starting graceful shutdown...","timestamp":"2025-06-04 19:23:51:2351"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-04 19:23:53:2353"}
+{"level":"info","message":"MongoDB connected","timestamp":"2025-06-04 19:23:56:2356"}
+{"level":"info","message":"MongoDB Connected: ac-b0gh6fl-shard-00-01.kafjjgg.mongodb.net | Database: test | Port: 27017","timestamp":"2025-06-04 19:23:56:2356"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-04 19:23:56:2356"}
+{"level":"info","message":"SIGINT received. Starting graceful shutdown...","timestamp":"2025-06-04 19:24:47:2447"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-05 17:25:46:2546"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-05 17:25:51:2551"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:25:51:2551"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:25:51:2551"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:25:51:2551"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-05 17:25:51:2551"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-05 17:33:03:333"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-05 17:33:08:338"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:33:08:338"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:33:08:338"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:33:08:338"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-05 17:33:08:338"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-05 17:35:27:3527"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-05 17:35:32:3532"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:35:32:3532"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:35:32:3532"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:35:32:3532"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-05 17:35:32:3532"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-05 17:35:46:3546"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-05 17:35:51:3551"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:35:51:3551"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:35:51:3551"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:35:51:3551"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-05 17:35:51:3551"}
+{"level":"info","message":"Connecting to MongoDB...","timestamp":"2025-06-05 17:37:05:375"}
+{"level":"warn","message":"MongoDB disconnected. Will attempt to reconnect...","timestamp":"2025-06-05 17:37:10:3710"}
+{"level":"error","message":"MongoDB Connection Error: Connection refused. MongoDB server may not be running.","timestamp":"2025-06-05 17:37:10:3710"}
+{"level":"error","message":"Original Error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:37:10:3710"}
+{"level":"error","message":"MongoDB error: connect ECONNREFUSED 127.0.0.1:27017","timestamp":"2025-06-05 17:37:10:3710"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2025-06-05 17:37:10:3710"}

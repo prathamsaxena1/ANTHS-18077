@@ -1,7 +1,7 @@
 // utils/seedDB.js
 const mongoose = require('mongoose');
 const config = require('../config/config');
-const logger = require('../utils/logger');
+const logger = require('./logger');
 const Hotel = require('../models/Hotel');
 const User = require('../models/User');
 const Room = require('../models/Room');
