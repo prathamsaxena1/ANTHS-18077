@@ -1,8 +1,8 @@
 // controllers/v1/authController.js - Add debugging
 
-import User from '../../models/User.js';
-import catchAsync from '../../utils/catchAsync.js';
-import AppError from '../../utils/appError.js';
+import User from '../models/User.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/appError.js';
 
 /**
  * Register a new user

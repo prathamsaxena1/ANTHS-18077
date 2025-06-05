@@ -1,132 +1,57 @@
-const mongoose = require('mongoose');
-const config = require('./config');
-const logger = require('../utils/logger');
+// config/db.js
 
-// MongoDB connection options
-const mongooseOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  autoIndex: config.env === 'development', // Disable autoIndex in production for performance
-  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
-  socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
-  family: 4, // Use IPv4, skip trying IPv6
-  maxPoolSize: 10 // Maintain up to 10 socket connections
-};
+import mongoose from 'mongoose';
 
-/**
- * Connect to MongoDB using Mongoose
- * @returns {Promise<void>}
- */
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(config.mongoUri, mongooseOptions);
+    // Get connection string from environment variables
+    const mongoURI = process.env.MONGO_URI;
     
-    // Log successful connection
-    logger.info(
-      `MongoDB Connected: ${conn.connection.host} | Database: ${conn.connection.name} | Port: ${conn.connection.port}`
-    );
+    if (!mongoURI) {
+      // Log detailed error if MONGO_URI is missing
+      console.error('MONGO_URI is not defined in environment variables');
+      process.exit(1);
+    }
     
-    // Initialize database models if needed
-    // await initializeModels();
+    console.log('Attempting to connect to MongoDB...');
     
+    // Connect to MongoDB with improved options and error handling
+    const conn = await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // If you're using MongoDB Atlas, these can be helpful:
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+    });
+    
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
     return conn;
-  } catch (err) {
-    handleConnectionError(err);
-  }
-};
-
-/**
- * Handle MongoDB connection errors with specific messages
- * @param {Error} err - Connection error
- */
-const handleConnectionError = (err) => {
-  // Define specific error messages based on error codes/types
-  const errorMessages = {
-    'MongoServerSelectionError': 'Could not connect to any MongoDB server in your cluster. Please check your network connection and MongoDB URI.',
-    'MongoParseError': 'Invalid MongoDB connection string. Check the format of your connection string.',
-    'bad auth': 'Authentication failed. Please check your username and password in the MongoDB URI.',
-    'ECONNREFUSED': 'Connection refused. MongoDB server may not be running.',
-    'PortInUse': 'MongoDB port is already in use by another process.',
-    '13': 'Authentication failed due to invalid credentials or incorrect auth database.',
-    '18': 'Authentication failed. Check credentials or ensure the user exists in the specified database.',
-    '8000': 'Bad connection string format.',
-    'querySrv ECONNREFUSED': 'DNS resolution failed for the MongoDB cluster. Check your network or DNS settings.'
-  };
-  
-  // Log appropriate error message
-  let errorMessage = 'Unknown MongoDB connection error.';
-  
-  for (const [errorKey, message] of Object.entries(errorMessages)) {
-    if (err.message.includes(errorKey) || (err.code && err.code.toString() === errorKey)) {
-      errorMessage = message;
-      break;
+  } catch (error) {
+    // Provide detailed error messages based on error type
+    if (error.name === 'MongoNetworkError' || error.message.includes('ECONNREFUSED')) {
+      console.error(
+        '\x1b[31m%s\x1b[0m', // Red color
+        'MongoDB Connection Error: Could not connect to MongoDB. Please check:'
+      );
+      console.error('  - Is MongoDB running on the specified host and port?');
+      console.error('  - If using MongoDB Atlas, check your internet connection and firewall settings');
+      console.error('  - Is your connection string correctly formatted?');
+      console.error(`Detailed error: ${error.message}`);
+    } else if (error.name === 'MongoParseError') {
+      console.error(
+        '\x1b[31m%s\x1b[0m', // Red color
+        'MongoDB Connection String Error: Could not parse connection string'
+      );
+      console.error('  - Check the format of your MongoDB connection string');
+      console.error('  - Ensure special characters in username/password are properly escaped');
+      console.error(`Detailed error: ${error.message}`);
+    } else {
+      console.error(`MongoDB connection error: ${error.message}`);
     }
-  }
-  
-  logger.error(`MongoDB Connection Error: ${errorMessage}`);
-  logger.error(`Original Error: ${err.message}`);
-  
-  // Only exit in production, optionally keep retrying in development
-  if (config.env === 'production') {
-    logger.error('Cannot connect to database. Exiting process...');
-    process.exit(1);
+    
+    // Exit with failure in server.js, but in app.js this function might be called elsewhere
+    return null;
   }
 };
 
-/**
- * Set up MongoDB connection event listeners 
- */
-const setupMongooseEventListeners = () => {
-  const db = mongoose.connection;
-  
-  // Connection events
-  db.on('connecting', () => {
-    logger.info('Connecting to MongoDB...');
-  });
-  
-  db.on('connected', () => {
-    logger.info('MongoDB connected');
-  });
-  
-  db.on('disconnecting', () => {
-    logger.info('Disconnecting from MongoDB...');
-  });
-  
-  db.on('disconnected', () => {
-    logger.warn('MongoDB disconnected. Will attempt to reconnect...');
-  });
-  
-  db.on('error', (err) => {
-    logger.error(`MongoDB error: ${err.message}`);
-    if (err.name === 'MongoNetworkError') {
-      logger.error('Network error occurred. Will attempt to reconnect...');
-    }
-  });
-  
-  db.on('reconnected', () => {
-    logger.info('Reconnected to MongoDB');
-  });
-};
-
-/**
- * Gracefully close MongoDB connection
- */
-const closeConnection = async () => {
-  try {
-    logger.info('Closing MongoDB connection...');
-    await mongoose.connection.close();
-    logger.info('MongoDB connection closed successfully');
-    return true;
-  } catch (err) {
-    logger.error(`Error closing MongoDB connection: ${err.message}`);
-    return false;
-  }
-};
-
-// Initialize event listeners
-setupMongooseEventListeners();
-
-module.exports = {
-  connectDB,
-  closeConnection
-};
+export default connectDB;
