@@ -1,14 +1,11 @@
 // routes/v1/authRoutes.js
-const express = require('express');
-const {
+import express from 'express';
+import {
   register,
   login,
-  logout,
-  getMe
+  logout
   // other auth controller methods
-} = require('../../controllers/v1/authController');
-
-const { protect } = require('../../middleware/auth');
+} from '../../controllers/v1/authController.js';
 
 const router = express.Router();
 
@@ -17,7 +14,4 @@ router.post('/register', register);
 router.post('/login', login);
 router.get('/logout', logout);
 
-// Protected routes
-router.get('/me', protect, getMe);
-
-module.exports = router;
+export default router;
