@@ -1,5 +1,4 @@
-// app.js - Verify route registration
-
+// app.js
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -10,13 +9,27 @@ import AppError from './utils/appError.js';
 
 const app = express();
 
-// Global middleware
+// Global middleware - Updated Helmet configuration
 app.use(helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" },
-    contentSecurityPolicy: false, // Disable CSP for testing
-    // Loosen other security policies as needed
-  }));
-app.use(cors());
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'", "http://localhost:*"] // Adjust as needed
+    }
+  }
+}));
+
+// CORS configuration - more permissive for development
+app.use(cors({
+  origin: '*', // For development only - tighten this for production
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 

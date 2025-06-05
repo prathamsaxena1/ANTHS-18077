@@ -47,5 +47,20 @@ const startServer = async () => {
   }
 };
 
+// Add to server.js before startServer()
+function printRoutes() {
+  app._router.stack.forEach((middleware) => {
+    if (middleware.route) {
+      console.log(middleware.route.path);
+    } else if (middleware.name === 'router') {
+      middleware.handle.stack.forEach((handler) => {
+        console.log(handler.route?.path);
+      });
+    }
+  });
+}
+
+printRoutes()
+
 // Start the server
 startServer();
