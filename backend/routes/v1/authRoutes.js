@@ -1,11 +1,12 @@
 // routes/v1/authRoutes.js
 import express from 'express';
-import {
-  register,
-  login,
-  logout
-  // other auth controller methods
+import { 
+  register, 
+  login, 
+  logout, 
+  getMe 
 } from '../../controllers/v1/authController.js';
+import { protect } from '../../middleware/auth.js';
 
 const router = express.Router();
 
@@ -13,5 +14,8 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.get('/logout', logout);
+
+// Protected routes
+router.get('/me', protect, getMe);
 
 export default router;

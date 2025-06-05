@@ -6,7 +6,8 @@ import morgan from 'morgan';
 import v1Routes from './routes/v1/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import AppError from './utils/appError.js';
-const userRoutes = require('./routes/v1/userRoutes');
+import userRoutes from './routes/v1/userRoutes.js';
+import authRoutes from './routes/v1/authRoutes.js';
 
 const app = express();
 

@@ -1,12 +1,12 @@
 // controllers/v1/authController.js
-const User = require('../../models/User');
-const ErrorResponse = require('../../utils/errorResponse');
-const asyncHandler = require('../../utils/catchAsync');
+import User from '../../models/User.js';
+import ErrorResponse from '../../utils/errorResponse.js';
+import asyncHandler from '../../utils/catchAsync.js';
 
 // @desc    Login user
 // @route   POST /api/v1/auth/login
 // @access  Public
-exports.login = asyncHandler(async (req, res, next) => {
+export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   // Validate email & password
@@ -15,8 +15,6 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user
-  // Include password in the result since we need to verify it
-  // This overrides the 'select: false' in the model
   const user = await User.findOne({ email }).select('+password');
 
   if (!user) {
@@ -33,42 +31,34 @@ exports.login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
-// Get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
-  // Create token
-  const token = user.getSignedJwtToken();
-
-  // Cookie options
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000 // Convert days to milliseconds
-    ),
-    httpOnly: true, // Cookie cannot be accessed by client-side JS
-  };
+// @desc    Register user
+// @route   POST /api/v1/auth/register
+// @access  Public
+export const register = asyncHandler(async (req, res, next) => {
+  const { name, email, password, role } = req.body;
   
-  // Set secure flag (HTTPS only) in production
-  if (process.env.NODE_ENV === 'production') {
-    cookieOptions.secure = true;
+  // Only allow admin to set roles other than 'guest'
+  let userRole = 'guest';
+  
+  if (role && req.user && req.user.role === 'admin') {
+    userRole = role;
   }
-
-  // Remove password from the output
-  user.password = undefined;
-
-  res
-    .status(statusCode)
-    .cookie('token', token, cookieOptions)
-    .json({
-      success: true,
-      token,
-      user // Return user data without the password
-    });
-};
+  
+  // Create user
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role: userRole
+  });
+  
+  sendTokenResponse(user, 200, res);
+});
 
 // @desc    Get current logged in user
 // @route   GET /api/v1/auth/me
 // @access  Private
-exports.getMe = asyncHandler(async (req, res, next) => {
-  // user is already available in req due to the protect middleware
+export const getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
   res.status(200).json({
@@ -80,8 +70,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @desc    Log user out / clear cookie
 // @route   GET /api/v1/auth/logout
 // @access  Private
-exports.logout = asyncHandler(async (req, res, next) => {
-  // Set token cookie to none and expire in 10 seconds
+export const logout = asyncHandler(async (req, res, next) => {
   res.cookie('token', 'none', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
@@ -92,3 +81,32 @@ exports.logout = asyncHandler(async (req, res, next) => {
     data: {}
   });
 });
+
+// Helper function to send token response
+const sendTokenResponse = (user, statusCode, res) => {
+  // Create token
+  const token = user.getSignedJwtToken();
+
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    cookieOptions.secure = true;
+  }
+
+  // Remove password from output
+  user.password = undefined;
+
+  res
+    .status(statusCode)
+    .cookie('token', token, cookieOptions)
+    .json({
+      success: true,
+      token,
+      user
+    });
+};

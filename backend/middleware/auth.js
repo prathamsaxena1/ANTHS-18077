@@ -1,39 +1,45 @@
-
-// middleware/auth.js - Enhanced with permissions
-const jwt = require('jsonwebtoken');
-const asyncHandler = require('../utils/catchAsync');
-const ErrorResponse = require('../utils/errorResponse');
-const User = require('../models/User');
-const Hotel = require('../models/Hotel');
+// middleware/auth.js
+import jwt from 'jsonwebtoken';
+import asyncHandler from '../utils/catchAsync.js';
+import ErrorResponse from '../utils/errorResponse.js';
+import User from '../models/User.js';
+import Hotel from '../models/Hotel.js';
 
 // Protect routes
-exports.protect = asyncHandler(async (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
+    // Get token from Bearer token in header
     token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.token) {
+    // Get token from cookie
     token = req.cookies.token;
   }
 
+  // Make sure token exists
   if (!token) {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 
   try {
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Add user to request object
     req.user = await User.findById(decoded.id);
+
     next();
   } catch (err) {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 });
 
-// Role-based authorization
-exports.authorize = (...roles) => {
+// Grant access to specific roles
+export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -46,55 +52,3 @@ exports.authorize = (...roles) => {
     next();
   };
 };
-
-// Permission-based authorization (more granular)
-exports.hasPermission = (permission) => {
-  return asyncHandler(async (req, res, next) => {
-    const hasAccess = await req.user.hasPermission(permission);
-    
-    if (!hasAccess) {
-      return next(
-        new ErrorResponse(
-          `User does not have permission: ${permission}`,
-          403
-        )
-      );
-    }
-    
-    next();
-  });
-};
-
-// Check if a user is the owner of a hotel
-exports.checkHotelOwnership = asyncHandler(async (req, res, next) => {
-  const hotel = await Hotel.findById(req.params.hotelId);
-  
-  if (!hotel) {
-    return next(
-      new ErrorResponse(`Hotel not found with id of ${req.params.hotelId}`, 404)
-    );
-  }
-  
-  // Admin bypass or ownership check
-  if (req.user.role === 'admin' || hotel.owner.toString() === req.user.id) {
-    next();
-  } else {
-    return next(
-      new ErrorResponse(
-        `User ${req.user.id} is not authorized to modify this hotel`,
-        403
-      )
-    );
-  }
-});
-
-// Admin-only middleware
-exports.adminOnly = asyncHandler(async (req, res, next) => {
-  if (req.user.role !== 'admin') {
-    return next(
-      new ErrorResponse('Only administrators can perform this action', 403)
-    );
-  }
-  
-  next();
-});

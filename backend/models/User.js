@@ -1,7 +1,7 @@
-// models/User.js - Updated Schema
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// models/User.js
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -30,26 +30,7 @@ const UserSchema = new mongoose.Schema({
     enum: ['guest', 'hotelOwner', 'admin'],
     default: 'guest'
   },
-  // For more advanced implementations, use role reference
-  // roleRef: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Role'
-  // },
-  hotels: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Hotel'
-    }
-  ],
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-}, {
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
+  // other fields...
 });
 
 // Encrypt password using bcrypt
@@ -81,19 +62,6 @@ UserSchema.methods.matchPassword = async function(enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Check if user has specific permission
-UserSchema.methods.hasPermission = async function(permission) {
-  // If using string-based roles
-  if (this.role === 'admin') return true; // Admin has all permissions
-  
-  // For specific role-based permissions
-  const permissions = {
-    'guest': ['read:hotels', 'create:bookings'],
-    'hotelOwner': ['read:hotels', 'create:bookings', 'create:hotels', 'update:own-hotels', 'delete:own-hotels'],
-    'admin': ['*'] // All permissions
-  };
-  
-  return permissions[this.role].includes(permission) || permissions[this.role].includes('*');
-};
+const User = mongoose.model('User', UserSchema);
 
-module.exports = mongoose.model('User', UserSchema);
+export default User;
