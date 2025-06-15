@@ -1,5 +1,5 @@
-import { Listing } from "../models/Listing.model.js";
-import { User } from "../models/User.model.js";
+import { Listing } from "../models/Hotel.js";
+import { User } from "../models/User.js";
 import { ApiError } from "../utils/apiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { v2 as cloudinary } from 'cloudinary';
