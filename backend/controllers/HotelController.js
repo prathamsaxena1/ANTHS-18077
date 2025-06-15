@@ -66,11 +66,9 @@ const createListing = asyncHandler(async (req, res) => {
 
 const getListings = asyncHandler(async (req, res) => {
     try {
-        // Fetch all listings from the database and populate the owner field
         const listings = await Listing.find().populate('owner', 'username email avatar');
         console.log("Listings retrieved successfully");
 
-        // Return the listings in the response
         return res.status(200).json({ listings });
     } catch (error) {
         console.error("An error occurred while retrieving listings:", error);
@@ -88,11 +86,9 @@ const getListing = asyncHandler(async (req, res) => {
 
     try {
         const listing = await Listing.findById(listingId).populate('owner', 'username email avatar');
-
         if (!listing) {
             return res.status(404).json({ message: "Listing not found" });
         }
-
         console.log("Listing retrieved successfully");
         return res.status(200).json({ listing });
     } catch (error) {
@@ -131,14 +127,12 @@ const buyListing = asyncHandler(async (req, res) => {
     if (!buyerEmail) {
         throw new ApiError(400, 'Buyer email is required');
     }
-
     try {
         const listing = await Listing.findById(listingId);
 
         if (!listing) {
             throw new ApiError(404, 'Listing not found');
         }
-
         if (listing.isSold) {
             return res.status(200).json({ message: 'Listing is already sold' });
         }
@@ -156,19 +150,16 @@ const buyListing = asyncHandler(async (req, res) => {
 
 const deleteListing = asyncHandler(async (req, res) => {
     const { listingId } = req.body;
-
     if (!listingId) {
         res.status(400);
         throw new Error('Listing ID is required');
     }
 
     const deletedListing = await Listing.findByIdAndDelete(listingId);
-
     if (!deletedListing) {
         res.status(404);
         throw new Error('Listing not found');
     }
-
     res.status(200).json({
         message: 'Listing deleted successfully',
         deletedListing,
