@@ -10,7 +10,6 @@ const cloudinaryConfig = async () => {
             api_key: process.env.CLOUDINARY_API_KEY,
             api_secret: process.env.CLOUDINARY_API_SECRET
         });
-
         await cloudinary.api.resources({ max_results: 1 });
         console.log("Connected with Cloudinary");
     } catch (error) {
