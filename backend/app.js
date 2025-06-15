@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import userRoutes from "./routes/v1/userRoutes.js";
-// import listingRoutes from "./src/routes/Listing.routes.js";
+import cloudinaryConfig from "./config/cloudinary.js";
 
 // Initialize the Express app
 const app = express();
@@ -18,8 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 // Use user routes
 app.use("/api/v1/user", userRoutes);
 
-// Use user routes
-// app.use("/api/v1/listing", listingRoutes);
+// Configure Cloudinary
+cloudinaryConfig();
 
 // Error Handling Middleware (Optional)
 app.use((err, req, res, next) => {
