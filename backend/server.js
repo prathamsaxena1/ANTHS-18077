@@ -8,7 +8,7 @@ connectDB()
     })
     
     app.listen(8001,()=>{
-        console.log("App is listening on port 8000")
+        console.log("App is listening on port 8001")
     })
 })
 .catch((error)=>{
