@@ -19,6 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 // Use user routes
 app.use("/api/v1/user", userRoutes);
 
+// Use user routes
+app.use("/api/v1/listing", listingRoutes);
+
 // Configure Cloudinary
 cloudinaryConfig();
 
