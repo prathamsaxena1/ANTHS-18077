@@ -1,63 +1,33 @@
-// app.js
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import v1Routes from './routes/v1/index.js';
-import { errorHandler } from './middleware/errorHandler.js';
-import AppError from './utils/appError.js';
-import userRoutes from './routes/v1/userRoutes.js';
-import authRoutes from './routes/v1/authRoutes.js';
+import cors from "cors";
+import express from "express";
+import userRoutes from "./routes/v1/userRoutes.js";
+// import listingRoutes from "./src/routes/Listing.routes.js";
 
+// Initialize the Express app
 const app = express();
 
-// Global middleware - Updated Helmet configuration
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "blob:"],
-      connectSrc: ["'self'", "http://localhost:*"] // Adjust as needed
-    }
-  }
-}));
+// Use CORS middleware
+app.use(cors());
 
-// CORS configuration - more permissive for development
-app.use(cors({
-  origin: '*', // For development only - tighten this for production
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// Use JSON middleware for parsing application/json
+app.use(express.json());
 
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+// Use URL-encoded middleware for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-// Development logging
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+// Use user routes
+app.use("/api/v1/user", userRoutes);
 
-// Simple test route to check if the API is responding
-app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'API is running'
-  });
+// Use user routes
+// app.use("/api/v1/listing", listingRoutes);
+
+// Error Handling Middleware (Optional)
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).json({
+        message: err.message || 'Internal Server Error'
+    });
 });
 
-// API routes
-app.use('/api/v1', v1Routes);
-app.use('/api/v1/users', userRoutes);
-
-// Handle undefined routes
-app.all('*', (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
-});
-
-// Global error handler
-app.use(errorHandler);
-
+// Export the app
 export default app;

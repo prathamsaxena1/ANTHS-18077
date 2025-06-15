@@ -1,23 +1,20 @@
-// routes/v1/userRoutes.js
-const express = require('express');
-const {
-  getUserProfile,
-  updateProfile,
-  updatePassword,
-  uploadProfilePhoto
-} = require('../../controllers/v1/userController');
+import { Router } from "express";
+import { verifyJWT } from "../../middleware/auth.js";
+import { loginUser,registerUser,getCurrentUser, logoutUser } from "../../controllers/User.controller.js";
 
-const { protect } = require('../../middleware/auth');
+const userRoutes = Router()
 
-const router = express.Router();
+userRoutes.route("/register").post(
+    registerUser
+)
+userRoutes.route("/login").post(
+    loginUser
+)
+userRoutes.route("/currentUser").post(
+    verifyJWT, getCurrentUser
+)
+userRoutes.route("/logout").post(
+    logoutUser
+)
 
-// All routes require authentication
-router.use(protect);
-
-// User profile routes
-router.get('/profile', getUserProfile);
-router.put('/profile', updateProfile);
-router.put('/updatepassword', updatePassword);
-router.put('/profile/photo', uploadProfilePhoto);
-
-module.exports = router;
+export default userRoutes

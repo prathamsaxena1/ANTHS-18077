@@ -1,54 +1,30 @@
-// middleware/auth.js
-import jwt from 'jsonwebtoken';
-import asyncHandler from '../utils/catchAsync.js';
-import ErrorResponse from '../utils/errorResponse.js';
-import User from '../models/User.js';
-import Hotel from '../models/Hotel.js';
+import jwt from "jsonwebtoken";
+import { User } from "../models/User.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/apiError.js";
 
-// Protect routes
-export const protect = asyncHandler(async (req, res, next) => {
-  let token;
+export const verifyJWT = asyncHandler(async (req, _, next) => {
+    console.log(req.headers); 
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    // Get token from Bearer token in header
-    token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.token) {
-    // Get token from cookie
-    token = req.cookies.token;
-  }
-
-  // Make sure token exists
-  if (!token) {
-    return next(new ErrorResponse('Not authorized to access this route', 401));
-  }
-
-  try {
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Add user to request object
-    req.user = await User.findById(decoded.id);
-
-    next();
-  } catch (err) {
-    return next(new ErrorResponse('Not authorized to access this route', 401));
-  }
-});
-
-// Grant access to specific roles
-export const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorResponse(
-          `User role ${req.user.role} is not authorized to access this route`,
-          403
-        )
-      );
+    const token = req.headers.authorization?.split(' ')[1]; 
+    if (!token) {
+        throw new ApiError(401, "Token not found");
     }
-    next();
-  };
-};
+
+    try {
+        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        // console.log("Token decoded !!!")
+        const user = await User.findById(decodedToken._id).select("-password");
+
+        if (!user) throw new ApiError(404, "User not found");
+
+        req.user = user;
+        next();
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            throw new ApiError(401, "Token expired");
+        } else {
+            throw new ApiError(401, "Invalid token");
+        }
+    }
+});
