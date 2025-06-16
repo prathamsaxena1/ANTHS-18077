@@ -1,0 +1,528 @@
+{
+    "info": {
+      "name": "Hotel Management API",
+      "description": "A comprehensive API for hotel booking and management",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "version": "1.0.0"
+    },
+    "item": [
+      {
+        "name": "Authentication",
+        "description": "User authentication endpoints",
+        "item": [
+          {
+            "name": "Register User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"guest\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/register",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "register"]
+              },
+              "description": "Register a new user and receive a JWT token"
+            }
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "login"]
+              },
+              "description": "Login with email and password to get JWT token"
+            },
+            "response": []
+          },
+          {
+            "name": "Get Current User",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/me",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "me"]
+              },
+              "description": "Get the currently logged in user details"
+            }
+          },
+          {
+            "name": "Logout",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/logout",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "logout"]
+              },
+              "description": "Logout user and clear token cookie"
+            }
+          },
+          {
+            "name": "Forgot Password",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"john@example.com\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/forgotpassword",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "forgotpassword"]
+              },
+              "description": "Request a password reset token via email"
+            }
+          },
+          {
+            "name": "Reset Password",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"password\": \"newpassword123\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/resetpassword/{{resetToken}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "resetpassword", "{{resetToken}}"]
+              },
+              "description": "Reset password using the token received via email"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Hotels",
+        "description": "Hotel management endpoints",
+        "item": [
+          {
+            "name": "Get All Hotels",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels?location=New York&minPrice=100&maxPrice=500&amenities=wifi,pool&sort=-price&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels"],
+                "query": [
+                  {
+                    "key": "location",
+                    "value": "New York"
+                  },
+                  {
+                    "key": "minPrice",
+                    "value": "100"
+                  },
+                  {
+                    "key": "maxPrice",
+                    "value": "500"
+                  },
+                  {
+                    "key": "amenities",
+                    "value": "wifi,pool"
+                  },
+                  {
+                    "key": "sort",
+                    "value": "-price"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get all hotels with filtering, sorting, and pagination options"
+            }
+          },
+          {
+            "name": "Get Single Hotel",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}"]
+              },
+              "description": "Get details of a specific hotel by ID"
+            }
+          },
+          {
+            "name": "Create Hotel",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Grand Hotel\",\n  \"description\": \"Luxury hotel in the city center\",\n  \"address\": {\n    \"street\": \"123 Main St\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10001\",\n    \"country\": \"USA\"\n  },\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [-73.935242, 40.730610]\n  },\n  \"contactInfo\": {\n    \"phone\": \"123-456-7890\",\n    \"email\": \"info@grandhotel.com\"\n  },\n  \"amenities\": [\"wifi\", \"pool\", \"gym\", \"spa\"],\n  \"priceRange\": {\n    \"min\": 100,\n    \"max\": 500\n  }\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels"]
+              },
+              "description": "Create a new hotel (requires hotelOwner or admin role)"
+            }
+          },
+          {
+            "name": "Update Hotel",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Hotel Name\",\n  \"description\": \"Updated hotel description\",\n  \"amenities\": [\"wifi\", \"pool\", \"gym\", \"spa\", \"restaurant\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}"]
+              },
+              "description": "Update hotel details (requires ownership or admin role)"
+            }
+          },
+          {
+            "name": "Delete Hotel",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}"]
+              },
+              "description": "Delete a hotel (requires ownership or admin role)"
+            }
+          },
+          {
+            "name": "Get Hotels in Radius",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/radius/10001/10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "radius", "10001", "10"]
+              },
+              "description": "Get hotels within a specific radius of a zipcode"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rooms",
+        "description": "Room management endpoints",
+        "item": [
+          {
+            "name": "Get All Rooms for Hotel",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}/rooms",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}", "rooms"]
+              },
+              "description": "Get all rooms for a specific hotel"
+            }
+          },
+          {
+            "name": "Create Room",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Deluxe Suite\",\n  \"description\": \"Spacious room with king bed\",\n  \"type\": \"suite\",\n  \"price\": 200,\n  \"capacity\": 2,\n  \"amenities\": [\"tv\", \"minibar\", \"safe\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}/rooms",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}", "rooms"]
+              },
+              "description": "Create a new room for a hotel (requires ownership or admin role)"
+            }
+          },
+          {
+            "name": "Update Room",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Suite Name\",\n  \"price\": 250,\n  \"amenities\": [\"tv\", \"minibar\", \"safe\", \"bathtub\"]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}/rooms/{{roomId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}", "rooms", "{{roomId}}"]
+              },
+              "description": "Update a room (requires ownership or admin role)"
+            }
+          },
+          {
+            "name": "Delete Room",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/hotels/{{hotelId}}/rooms/{{roomId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "hotels", "{{hotelId}}", "rooms", "{{roomId}}"]
+              },
+              "description": "Delete a room (requires ownership or admin role)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Bookings",
+        "description": "Booking management endpoints",
+        "item": [
+          {
+            "name": "Create Booking",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"hotelId\": \"{{hotelId}}\",\n  \"roomId\": \"{{roomId}}\",\n  \"checkInDate\": \"2023-12-01\",\n  \"checkOutDate\": \"2023-12-05\",\n  \"guestInfo\": {\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"phone\": \"123-456-7890\"\n  },\n  \"specialRequests\": \"Late check-in, please\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/bookings",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "bookings"]
+              },
+              "description": "Create a new booking"
+            }
+          },
+          {
+            "name": "Get User Bookings",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/bookings",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "bookings"]
+              },
+              "description": "Get all bookings for the current user"
+            }
+          },
+          {
+            "name": "Get Booking Details",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "bookings", "{{bookingId}}"]
+              },
+              "description": "Get details of a specific booking"
+            }
+          },
+          {
+            "name": "Cancel Booking",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "bookings", "{{bookingId}}"]
+              },
+              "description": "Cancel a booking"
+            }
+          }
+        ]
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            ""
+          ]
+        }
+      },
+      {
+        "listen": "test",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            "// Save token from login response",
+            "if (pm.response.code === 200 && pm.info.requestName === \"Login\") {",
+            "    var jsonResponse = pm.response.json();",
+            "    if (jsonResponse.token) {",
+            "        pm.environment.set(\"token\", jsonResponse.token);",
+            "        console.log(\"Token saved to environment\");",
+            "    }",
+            "}",
+            "",
+            "// Save hotel ID if creating a hotel",
+            "if (pm.response.code === 201 && pm.info.requestName === \"Create Hotel\") {",
+            "    var jsonResponse = pm.response.json();",
+            "    if (jsonResponse.data && jsonResponse.data._id) {",
+            "        pm.environment.set(\"hotelId\", jsonResponse.data._id);",
+            "        console.log(\"Hotel ID saved to environment\");",
+            "    }",
+            "}",
+            "",
+            "// Save room ID if creating a room",
+            "if (pm.response.code === 201 && pm.info.requestName === \"Create Room\") {",
+            "    var jsonResponse = pm.response.json();",
+            "    if (jsonResponse.data && jsonResponse.data._id) {",
+            "        pm.environment.set(\"roomId\", jsonResponse.data._id);",
+            "        console.log(\"Room ID saved to environment\");",
+            "    }",
+            "}",
+            "",
+            "// Save booking ID if creating a booking",
+            "if (pm.response.code === 201 && pm.info.requestName === \"Create Booking\") {",
+            "    var jsonResponse = pm.response.json();",
+            "    if (jsonResponse.data && jsonResponse.data._id) {",
+            "        pm.environment.set(\"bookingId\", jsonResponse.data._id);",
+            "        console.log(\"Booking ID saved to environment\");",
+            "    }",
+            "}"
+          ]
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:5000",
+        "type": "string"
+      }
+    ]
+  }
