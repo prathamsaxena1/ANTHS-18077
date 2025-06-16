@@ -23,7 +23,7 @@ services:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
     networks:
-      - hotel-network
+      - hotel-network 
 
   mongo:
     image: mongo:6
