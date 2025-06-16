@@ -3,6 +3,7 @@ import express from "express";
 import userRoutes from "./routes/v1/userRoutes.js";
 import cloudinaryConfig from "./config/cloudinary.js";
 import listingRoutes from "./routes/v1/hotelRoutes.js";
+import logger from "./utils/logger.js";
 
 // Initialize the Express app
 const app = express();

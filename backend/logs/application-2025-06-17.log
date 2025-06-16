@@ -1,0 +1,5 @@
+{"level":"info","message":"App is listening on port 8001","service":"hotel-api","timestamp":"2025-06-17 04:26:33"}
+{"level":"debug","message":"App is listening on port 8001","service":"hotel-api","timestamp":"2025-06-17 04:27:28"}
+{"level":"info","message":"App is listening on port 8001","service":"hotel-api","timestamp":"2025-06-17 04:27:46"}
+{"level":"info","message":"You are connected to the database !","service":"hotel-api","timestamp":"2025-06-17 04:28:06"}
+{"level":"info","message":"App is listening on port 8001","service":"hotel-api","timestamp":"2025-06-17 04:28:06"}
