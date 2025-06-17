@@ -1,74 +1,63 @@
+// src/App.jsx
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Layout
-import MainLayout from './components/layout/MainLayout';
-
-// Pages
-import Home from './pages/Home/Home';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
+import HotelsPage from './pages/HotelsPage';
+import HotelDetailPage from './pages/HotelDetailPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProfilePage from './pages/ProfilePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import NotFoundPage from './pages/NotFoundPage';
+import Layout from './components/layout/Layout';
+import HomePage from './pages/Home/Home';
+import './global.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public routes wrapped in MainLayout */}
-        <Route>
-
-          <Route index element={<Home />
-
-          } />
-
-          <Route path="login" element={<Login />
-
-          } />
-
-          <Route path="register" element={<Register />
-
-          } />
-
-          {/* Add more public routes here */}
-          {/*
-<Route path="hotels" element={<Hotels />
-
-} /> /}
-{/
-
-<Route path="hotels/:id" element={<HotelDetails />
-
-} /> /}
-{/
-
-<Route path="about" element={<About />
-
-} /> */}
-
-          {/* 404 - Not Found */}
-
-        </Route>
-        {/* Protected routes would go here (we'll add these later) */}
-        {/* Example:
-<Route>
-<DashboardLayout />
-      </ProtectedRoute>
-    }>
-<Route index element={<Dashboard />
+<Router>
+<Layout>
+<Routes>
+<Route path="/" element={<HomePage />
 
 } />
 
-<Route path="bookings" element={<Bookings />
+<Route path="/hotels" element={<HotelsPage />
 
 } />
 
-<Route path="profile" element={<Profile />
+<Route path="/hotels/:id" element={<HotelDetailPage />
 
 } />
 
-</Route>
-    */}
-      </Routes>
-    </Router>
-  );
+<Route path="/login" element={<LoginPage />
+
+} />
+
+<Route path="/register" element={<RegisterPage />
+
+} />
+
+<Route path="/profile" element={<ProfilePage />
+
+} />
+
+<Route path="/about" element={<AboutPage />
+
+} />
+
+<Route path="/contact" element={<ContactPage />
+
+} />
+
+<Route path="*" element={<NotFoundPage />
+
+} />
+
+</Routes>
+</Layout>
+</Router>
+);
 }
 
 export default App;

@@ -1,32 +1,85 @@
-const Home = () => {
-    return (
-        <div className="min-h-screen bg-black text-white p-10">
-            <h1 className="text-4xl font-bold">
-                Welcome to Hotel Management System
-            </h1>
-            <p className="text-lg mt-2">
-                Find and book the best hotels for your next trip.
-            </p>
+import React from 'react';
 
-            <div className="mt-12">
-                <h2 className="text-2xl font-semibold">
-                    Featured Hotels
+const HomePage = () => {
+    return (
+        <div>
+            <h1>
+                Welcome to Hotel Manager
+
+            </h1>
+            <p>
+                Find the perfect hotel for your next trip!
+
+            </p>
+            {/* You could add a search form here */}
+            <div className="search-container">
+                <h2>
+                    Search for Hotels
+
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                    <div className="bg-white text-black rounded-lg shadow-md p-6 hotel-card">
-                        <h3 className="text-xl font-bold">
-                            Hotel Example
-                        </h3>
-                        <p>City, Country</p>
-                        <div className="mt-4">
-                            <span className="font-semibold">$99</span>
-                            <span className="ml-1">/ night</span>
-                        </div>
+                <form>
+                    <div className="form-group">
+                        <label>
+                            Destination
+
+                        </label>
+                        <input
+                            type="text"
+                            id="destination"
+                            placeholder="Where are you going?"
+                        />
+
                     </div>
-                </div>
+                    <div>
+                        <label>
+                            Check-in
+
+                        </label>
+                        <input type="date" id="check-in" />
+                    </div>
+                    <div>
+                        <label>
+                            Check-out
+
+                        </label>
+                        <input type="date" id="check-out" />
+                    </div>
+                    <div>
+                        <label>
+                            Guests
+
+                        </label>
+                        <select>
+                            <option>
+                                1 Guest
+
+                            </option>
+                            <option>
+                                2 Guests
+
+                            </option>
+                            <option>
+                                3 Guests
+
+                            </option>
+                            <option>
+                                4 Guests
+
+                            </option>
+                            <option>
+                                5+ Guests
+
+                            </option>
+                        </select>
+                    </div>
+                    <button>
+                        Search
+
+                    </button>
+                </form>
             </div>
         </div>
     );
 };
 
-export default Home;
+export default HomePage;

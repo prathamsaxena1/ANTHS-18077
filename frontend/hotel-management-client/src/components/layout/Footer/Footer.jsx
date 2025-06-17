@@ -1,85 +1,146 @@
+// src/components/layout/Footer.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
-    const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
-    return (
-        <footer>
-            <div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div>
-                        <h3>
-                            HotelBooking
+  return (
+<footer>
+<div>
+    <div className="footer-content">
+      <div className="footer-section">
+<h3>
+About Us
 
-                        </h3>
-                        <p>
-                            Find and book the perfect hotel for your next adventure.
-                        </p>
-                    </div>
-                    <div>
-                        <h3>
-                            Quick Links
+</h3>
+<p>
+          Hotel Manager is a platform that helps connect travelers with 
+          the perfect accommodations for their journeys.
+</p>
+        <div className="social-icons">
+<a>
+<i className="fab fa-facebook-f"></i>
 
-                        </h3>
-                        <ul>
-                            <li>
-                                <a>
-                                    About Us
+</a>
+<a>
+<i className="fab fa-twitter"></i>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    Contact Us
+</a>
+<a>
+<i className="fab fa-instagram"></i>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    Privacy Policy
+</a>
+<a>
+<i className="fab fa-linkedin-in"></i>
 
-                                </a>
-                            </li>
-                            <li>
-                                <a>
-                                    Terms of Service
+</a>
+</div>
+      </div>
+<div>
+<h3>
+Quick Links
 
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3>
-                            Contact
+</h3>
+<ul>
+<li>
+<Link>
+Home
 
-                        </h3>
-                        <address>
-                            <p>
-                                123 Hotel Street
+</Link>
+</li>
+<li>
+<Link>
+Hotels
 
-                            </p>
-                            <p>
-                                City, Country
+</Link>
+</li>
+<li>
+<Link>
+About
 
-                            </p>
-                            <p>
-                                Email: info@hotelbooking.com
+</Link>
+</li>
+<li>
+<Link>
+Contact
 
-                            </p>
-                            <p>
-                                Phone: +1 234 567 890
+</Link>
+</li>
+<li>
+<Link>
+FAQ
 
-                            </p>
-                        </address>
-                    </div>
-                </div>
-                <div>
-                    <p>
-                        © {currentYear} HotelBooking. All rights reserved.
+</Link>
+</li>
+</ul>
+</div>
+<div>
+<h3>
+Support
 
-                    </p>
-                </div>
-            </div>
-        </footer>
-    );
+</h3>
+<ul>
+<li>
+<Link>
+Help Center
+
+</Link>
+</li>
+<li>
+<Link>
+Privacy Policy
+
+</Link>
+</li>
+<li>
+<Link>
+Terms of Service
+
+</Link>
+</li>
+<li>
+<Link>
+Sitemap
+
+</Link>
+</li>
+</ul>
+</div>
+<div>
+<h3>
+Contact Us
+
+</h3>
+<p>
+<i className="fas fa-map-marker-alt"></i>
+
+123 Main Street, City, Country
+
+</p>
+<p>
+<i className="fas fa-envelope"></i>
+
+info@hotelmanager.com
+
+</p>
+<p>
+<i className="fas fa-phone"></i>
+
++1 (123) 456-7890
+
+</p>
+</div>
+    </div>
+<div>
+<p>
+© {year} Hotel Manager. All rights reserved.
+
+</p>
+</div>
+  </div>
+</footer>
+);
 };
 
 export default Footer;
