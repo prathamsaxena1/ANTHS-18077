@@ -1,4 +1,3 @@
-// src/components/layout/Footer.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -49,30 +48,43 @@ Home
 
 </Link>
 </li>
+          {/* These links can be added when the pages are created */}
+          {/*
 <li>
 <Link>
 Hotels
 
 </Link>
 </li>
+/}
+{/
+
 <li>
 <Link>
 About
 
 </Link>
 </li>
+/}
+{/
+
 <li>
 <Link>
 Contact
 
 </Link>
 </li>
+/}
+{/
+
 <li>
 <Link>
 FAQ
 
 </Link>
 </li>
+*/}
+
 </ul>
 </div>
 <div>
@@ -81,6 +93,7 @@ Support
 
 </h3>
 <ul>
+          {/* These links can be added when the pages are created */}
 <li>
 <Link>
 Help Center
@@ -96,12 +109,6 @@ Privacy Policy
 <li>
 <Link>
 Terms of Service
-
-</Link>
-</li>
-<li>
-<Link>
-Sitemap
 
 </Link>
 </li>
