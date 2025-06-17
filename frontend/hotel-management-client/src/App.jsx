@@ -44,9 +44,6 @@ function App() {
 } /> */}
 
           {/* 404 - Not Found */}
-          <Route path="*" element={<NotFound />
-
-          } />
 
         </Route>
         {/* Protected routes would go here (we'll add these later) */}
