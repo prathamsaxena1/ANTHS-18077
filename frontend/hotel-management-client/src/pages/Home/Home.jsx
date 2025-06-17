@@ -1,4 +1,5 @@
 import React from 'react';
+import FormExample from '../../components/FormExample';
 
 const HomePage = () => {
     return (
@@ -23,6 +24,7 @@ const HomePage = () => {
                             Destination
 
                         </label>
+                        <FormExample/>
                         <input
                             type="text"
                             id="destination"
