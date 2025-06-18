@@ -1,86 +1,142 @@
-import React from 'react';
-import FormExample from '../../components/FormExample';
+// pages/Home/Home.jsx
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './Home.css';
 
-const HomePage = () => {
-    return (
-        <div>
-            <h1>
-                Welcome to Hotel Manager
+const Home = () => {
+  const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-            </h1>
-            <p>
-                Find the perfect hotel for your next trip!
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:8001/api/v1/hotels');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch hotels');
+        }
+        
+        const data = await response.json();
+        setHotels(data.data || []);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
 
-            </p>
-            {/* You could add a search form here */}
-            <div className="search-container">
-                <h2>
-                    Search for Hotels
+    fetchHotels();
+  }, []);
 
-                </h2>
-                <form>
-                    <div className="form-group">
-                        <label>
-                            Destination
+  if (loading) {
+    return
+<div>
+Loading hotels...
 
-                        </label>
-                        <input
-                            type="text"
-                            id="destination"
-                            placeholder="Where are you going?"
-                        />
+</div>
+;
+}
 
-                    </div>
-                    <div>
-                        <label>
-                            Check-in
+if (error) {
+return
 
-                        </label>
-                        <input type="date" id="check-in" />
-                    </div>
-                    <div>
-                        <label>
-                            Check-out
+<div>
+Error: {error}
 
-                        </label>
-                        <input type="date" id="check-out" />
-                    </div>
-                    <div>
-                        <label>
-                            Guests
+</div>
+;
+}
 
-                        </label>
-                        <select>
-                            <option>
-                                1 Guest
+return (
 
-                            </option>
-                            <option>
-                                2 Guests
+<div>
+  <section className="hero-section">
+    <div className="hero-content">
+<h1>
+Find Your Perfect Stay
 
-                            </option>
-                            <option>
-                                3 Guests
+</h1>
+<p>
+Browse our collection of premium hotels for your next destination
 
-                            </option>
-                            <option>
-                                4 Guests
+</p>
+<Link>
+Browse All Hotels
 
-                            </option>
-                            <option>
-                                5+ Guests
+</Link>
+</div>
+  </section>
+<section>
+<h2>
+Featured Hotels
 
-                            </option>
-                        </select>
-                    </div>
-                    <button>
-                        Search
+</h2>
+<div>
+      {hotels.length === 0 ? (
+<p>
+No hotels available at the moment.
 
-                    </button>
-                </form>
+</p>
+      ) : (
+        hotels.map((hotel) => (
+          <div className="hotel-card" key={hotel._id}>
+            <div className="hotel-image">
+              {hotel.imageUrls && hotel.imageUrls.length > 0 ? (
+                <img 
+                  src={hotel.imageUrls[0]} 
+                  alt={hotel.name} 
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/placeholder-hotel.jpg";
+                  }}
+                />
+              ) : (
+<img src="/placeholder-hotel.jpg" alt="Placeholder" />
+              )}
+</div>
+<div>
+<h3>
+{hotel.name}
+
+</h3>
+<p>
+                {hotel.address && typeof hotel.address === 'object' 
+                  ? `${hotel.address.street || ''}, ${hotel.address.city || ''}, ${hotel.address.state || ''} ${hotel.address.zipCode || ''}`
+                  : hotel.address || 'Address not available'}
+</p>
+              <div className="hotel-price">
+                {hotel.discountPrice ? (
+                  <>
+<span>
+${hotel.regularPrice}
+
+</span>
+<span>
+${hotel.discountPrice}
+
+</span>
+                  </>
+                ) : (
+<span>
+${hotel.regularPrice}
+
+</span>
+                )}
+</div>
+<Link>
+View Details
+
+</Link>
             </div>
-        </div>
-    );
+          </div>
+        ))
+      )}
+    </div>
+</section>
+</div>
+);
 };
 
-export default HomePage;
+export default Home;
