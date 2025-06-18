@@ -6,35 +6,38 @@ import Home from './pages/Home/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import "./global.css"
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-<Router>
-<Layout>
-<Routes>
-<Route path="/" element={<Home />
+    <Router>
+      <AuthProvider>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />
 
-} />
+            } />
 
-<Route path="/login" element={<Login />
+            <Route path="/login" element={<Login />
 
-} />
+            } />
 
-<Route path="/register" element={<Register />
+            <Route path="/register" element={<Register />
 
-} />
-<Route path="*" element={
+            } />
+            <Route path="*" element={
 
-<div>
-Page not found
+              <div>
+                Page not found
 
-</div>
-} />
+              </div>
+            } />
 
-</Routes>
-</Layout>
-</Router>
-);
+          </Routes>
+        </Layout>
+      </AuthProvider >
+    </Router>
+  );
 }
 
 export default App;

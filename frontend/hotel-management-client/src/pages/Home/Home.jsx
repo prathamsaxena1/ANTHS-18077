@@ -24,7 +24,6 @@ const HomePage = () => {
                             Destination
 
                         </label>
-                        <FormExample/>
                         <input
                             type="text"
                             id="destination"
