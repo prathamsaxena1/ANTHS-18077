@@ -1,148 +1,104 @@
-// src/context/AuthContext.jsx
+// src/context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authAPI } from '../utils/api';
+import { loginUser, registerUser, logoutUser, getCurrentUser } from '../services/authService';
 
-const AuthContext = createContext(null);
+// Create context
+const AuthContext = createContext();
+
+// Custom hook to use the auth context
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Check if user is already logged in
   useEffect(() => {
-    // Check if user is already logged in (from localStorage)
-    const loadUserFromStorage = () => {
+    const checkLoggedIn = async () => {
       try {
-        const storedUser = localStorage.getItem('user');
-        
-        if (storedUser) {
-          setCurrentUser(JSON.parse(storedUser));
+        if (localStorage.getItem('token')) {
+          const userData = await getCurrentUser();
+          setUser(userData.data);
         }
       } catch (err) {
-        console.error("Error loading user from storage:", err);
+        console.error('Authentication check failed', err);
+        localStorage.removeItem('token'); // Clear invalid token
       } finally {
         setLoading(false);
       }
     };
 
-    loadUserFromStorage();
+    checkLoggedIn();
   }, []);
 
-  const login = async (email, password) => {
-    setLoading(true);
-    setError(null);
-    
+  // Login function
+  const login = async (credentials) => {
     try {
-      const response = await authAPI.login({ email, password });
-      const { token, user } = response.data;
-      
-      // Save user and token to localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      // Update state
-      setCurrentUser(user);
-      return response.data;
+      setLoading(true);
+      setError(null);
+      const response = await loginUser(credentials);
+      setUser(response.data);
+      return response;
     } catch (err) {
-      setError(err.friendlyMessage || 'Login failed');
+      setError(err.message || 'Login failed');
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
+  // Register function
   const register = async (userData) => {
-    setLoading(true);
-    setError(null);
-    
     try {
-      const response = await authAPI.register(userData);
-      const { token, user } = response.data;
-      
-      // Save user and token to localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      // Update state
-      setCurrentUser(user);
-      return response.data;
+      setLoading(true);
+      setError(null);
+      const response = await registerUser(userData);
+      setUser(response.data);
+      return response;
     } catch (err) {
-      setError(err.friendlyMessage || 'Registration failed');
+      setError(err.message || 'Registration failed');
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
+  // Logout function
   const logout = async () => {
-    setLoading(true);
-    
     try {
-      await authAPI.logout();
-      
-      // Clear local storage
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      
-      // Clear state
-      setCurrentUser(null);
+      setLoading(true);
+      await logoutUser();
+      setUser(null);
     } catch (err) {
-      console.error("Error during logout:", err);
+      setError(err.message || 'Logout failed');
     } finally {
       setLoading(false);
     }
   };
 
-  const updateProfile = async (userData) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const response = await authAPI.updateProfile(userData);
-      const updatedUser = response.data.data;
-      
-      // Update local storage
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      
-      // Update state
-      setCurrentUser(updatedUser);
-      return response.data;
-    } catch (err) {
-      setError(err.friendlyMessage || 'Profile update failed');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Helper functions for role-based permissions
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === 'admin';
+  const isHotelOwner = user?.role === 'hotelOwner';
+  const isGuest = user?.role === 'guest';
 
-  // Check if the user has a specific role
-  const hasRole = (role) => {
-    return currentUser && currentUser.role === role;
-  };
-
-  const value = {
-    currentUser,
-    loading,
-    error,
-    login,
-    register,
-    logout,
-    updateProfile,
-    isLoggedIn: !!currentUser,
-    hasRole,
-    isGuest: currentUser && currentUser.role === 'guest',
-    isHotelOwner: currentUser && currentUser.role === 'hotelOwner',
-    isAdmin: currentUser && currentUser.role === 'admin'
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      error,
+      login,
+      register,
+      logout,
+      isAuthenticated,
+      isAdmin,
+      isHotelOwner,
+      isGuest
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-// Custom hook to use the auth context
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === null) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export default AuthContext;
