@@ -1,43 +1,58 @@
 // src/App.jsx
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/layout/Layout';
+import { AuthProvider } from './context/AuthContext';
+import Layout from './components/Layout';
 import Home from './pages/Home/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import "./global.css"
-import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
+// Only include the routes for pages we've confirmed are implemented
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />
+<Router>
+<AuthProvider>
+<Layout>
+<Routes>
+<Route path="/" element={<Home />
 
-            } />
+} />
 
-            <Route path="/login" element={<Login />
+<Route path="/login" element={<Login />
 
-            } />
+} />
 
-            <Route path="/register" element={<Register />
+<Route path="/register" element={<Register />
 
-            } />
-            <Route path="*" element={
+} />
 
-              <div>
-                Page not found
+        {/* Add these routes only if the corresponding page components exist */}
+        {/* If these components don't exist yet, keep them commented out */}
+        {/*
+<Route path="/hotels" element={<HotelList />
 
-              </div>
-            } />
+} />
 
-          </Routes>
-        </Layout>
-      </AuthProvider >
-    </Router>
-  );
+<Route path="/hotels/:id" element={<HotelDetail />
+
+} />
+<Route path="/dashboard" element={
+
+<ProtectedRoute>
+<Dashboard />
+</ProtectedRoute>
+        } />
+        <Route path="/dashboard/create-hotel" element={
+<ProtectedRoute>
+<CreateHotel />
+</ProtectedRoute>
+        } />
+        */}
+</Routes>
+</Layout>
+</AuthProvider>
+</Router>
+);
 }
 
 export default App;
