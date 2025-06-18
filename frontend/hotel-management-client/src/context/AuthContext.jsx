@@ -1,5 +1,6 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI } from '../utils/api';
 
 const AuthContext = createContext(null);
 
@@ -13,9 +14,8 @@ export const AuthProvider = ({ children }) => {
     const loadUserFromStorage = () => {
       try {
         const storedUser = localStorage.getItem('user');
-        const storedToken = localStorage.getItem('token');
         
-        if (storedUser && storedToken) {
+        if (storedUser) {
           setCurrentUser(JSON.parse(storedUser));
         }
       } catch (err) {
@@ -33,30 +33,18 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include'
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
+      const response = await authAPI.login({ email, password });
+      const { token, user } = response.data;
+      
       // Save user and token to localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       
       // Update state
-      setCurrentUser(data.user);
-      return data;
+      setCurrentUser(user);
+      return response.data;
     } catch (err) {
-      setError(err.message);
+      setError(err.friendlyMessage || 'Login failed');
       throw err;
     } finally {
       setLoading(false);
@@ -68,29 +56,18 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+      const response = await authAPI.register(userData);
+      const { token, user } = response.data;
       
       // Save user and token to localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       
       // Update state
-      setCurrentUser(data.user);
-      return data;
+      setCurrentUser(user);
+      return response.data;
     } catch (err) {
-      setError(err.message);
+      setError(err.friendlyMessage || 'Registration failed');
       throw err;
     } finally {
       setLoading(false);
@@ -101,11 +78,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     
     try {
-      // Call logout API endpoint to clear cookies
-      await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/logout`, {
-        method: 'GET',
-        credentials: 'include'
-      });
+      await authAPI.logout();
       
       // Clear local storage
       localStorage.removeItem('token');
@@ -125,31 +98,17 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     
     try {
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/auth/updatedetails`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(userData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Profile update failed');
-      }
+      const response = await authAPI.updateProfile(userData);
+      const updatedUser = response.data.data;
       
       // Update local storage
-      localStorage.setItem('user', JSON.stringify(data.data));
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       
       // Update state
-      setCurrentUser(data.data);
-      return data;
+      setCurrentUser(updatedUser);
+      return response.data;
     } catch (err) {
-      setError(err.message);
+      setError(err.friendlyMessage || 'Profile update failed');
       throw err;
     } finally {
       setLoading(false);
