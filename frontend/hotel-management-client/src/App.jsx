@@ -1,41 +1,30 @@
-// src/App.js
-import React from 'react';
+// App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-// Public pages
+import Layout from './components/Layout/Layout';
 import Home from './pages/Home/Home';
-import Login from './pages/Auth/Login';
-import Register from './pages/Auth/Register';
-// Protected pages
-import { AuthProvider } from './context/AuthContext';
+import HotelDetail from './pages/HotelDetail/HotelDetail';
+// Import other pages...
 
-const App = () => {
+function App() {
   return (
 <Router>
-<AuthProvider>
 <Routes>
-<Route>
-{/* Public Routes */}
-
-<Route index element={<Home />
-
+    <Route path="/" element={
+<Layout>
+<Home />
+</Layout>
 } />
+<Route path="/hotel/:id" element={
 
-<Route path="login" element={<Login />
-
+<Layout>
+<HotelDetail />
+</Layout>
 } />
+{/* Other routes... */}
 
-<Route path="register" element={<Register />
-
-} />
-
-        {/* Protected Routes */}
-
-</Route>
 </Routes>
-</AuthProvider>
 </Router>
 );
-};
+}
 
 export default App;

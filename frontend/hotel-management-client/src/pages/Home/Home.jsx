@@ -12,7 +12,6 @@ const Home = () => {
     const fetchHotels = async () => {
       try {
         setLoading(true);
-        // Using the corrected API endpoint
         const response = await fetch('http://localhost:8001/api/v1/listing/getListings');
         
         if (!response.ok) {
@@ -20,9 +19,19 @@ const Home = () => {
         }
         
         const data = await response.json();
-        setHotels(data.data || []);
+        console.log('API Response:', data); // For debugging
+        
+        // Correctly extract the listings array
+        if (data && data.listings && Array.isArray(data.listings)) {
+          setHotels(data.listings);
+        } else {
+          setHotels([]);
+          console.error('Unexpected data structure:', data);
+        }
+        
         setLoading(false);
       } catch (error) {
+        console.error('Fetch error:', error);
         setError(error.message);
         setLoading(false);
       }
@@ -103,12 +112,23 @@ No hotels available at the moment.
 
 </h3>
 <p>
-                {hotel.address && typeof hotel.address === 'object' 
-                  ? `${hotel.address.street || ''}, ${hotel.address.city || ''}, ${hotel.address.state || ''} ${hotel.address.zipCode || ''}`
-                  : hotel.address || 'Address not available'}
+{hotel.description?.substring(0, 100)}...
+
 </p>
-              <div className="hotel-price">
-                {hotel.discountPrice ? (
+<p>
+{hotel.address}
+
+</p>
+              <div className="hotel-details">
+                {hotel.parking && (
+<span>
+Parking Available
+
+</span>
+                )}
+</div>
+<div>
+                {hotel.discountPrice && hotel.discountPrice < hotel.regularPrice ? (
                   <>
 <span>
 ${hotel.regularPrice}
@@ -121,7 +141,7 @@ ${hotel.discountPrice}
                   </>
                 ) : (
 <span>
-${hotel.regularPrice}
+${hotel.regularPrice}/night
 
 </span>
                 )}
