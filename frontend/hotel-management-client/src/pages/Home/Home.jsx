@@ -12,7 +12,8 @@ const Home = () => {
     const fetchHotels = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8001/api/v1/hotels');
+        // Using the corrected API endpoint
+        const response = await fetch('http://localhost:8001/api/v1/listing/getListings');
         
         if (!response.ok) {
           throw new Error('Failed to fetch hotels');
