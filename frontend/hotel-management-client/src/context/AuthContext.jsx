@@ -1,62 +1,153 @@
-// src/contexts/AuthContext.js
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { loginUser, logoutUser, getToken, getUser } from '../services/authService';
+// context/AuthContext.jsx
+import { createContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext();
+// Create the auth context
+export const AuthContext = createContext();
 
+// Create a provider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Check for existing token/user on mount
+  // Check for existing user session on initial load
   useEffect(() => {
-    const token = getToken();
-    const storedUser = getUser();
+    const checkUserSession = () => {
+      try {
+        // Get user from localStorage
+        const storedUser = localStorage.getItem('user');
+        const storedToken = localStorage.getItem('token');
+        
+        if (storedUser && storedToken) {
+          setCurrentUser(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.error('Session restoration error:', error);
+        // Clear potentially corrupted session data
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    if (token && storedUser) {
-      setUser(storedUser);
-    }
-    
-    setLoading(false);
+    checkUserSession();
   }, []);
 
-  const handleLogin = async (email, password) => {
-    setLoading(true);
-    setError(null);
+  // Login function
+  const login = async (email, password, rememberMe) => {
     try {
-      const data = await loginUser(email, password);
-      setUser(data.user || data.data);
-      return data;
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    } finally {
-      setLoading(false);
+      // Make API request to login endpoint
+      const response = await fetch('http://localhost:8001/api/v1/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw { 
+          response: { 
+            data: { message: data.message || 'Login failed' } 
+          } 
+        };
+      }
+      
+      // Save user data and token
+      const storage = rememberMe ? localStorage : sessionStorage;
+      storage.setItem('user', JSON.stringify(data.user));
+      storage.setItem('token', data.token);
+      
+      // Update state
+      setCurrentUser(data.user);
+      
+      return { success: true, user: data.user };
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
     }
   };
 
-  const handleLogout = () => {
-    logoutUser();
-    setUser(null);
+  // Logout function
+  const logout = async () => {
+    try {
+      // Clear storage
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('token');
+      
+      // Clear state
+      setCurrentUser(null);
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
   };
 
-  const authContextValue = {
-    user,
+  // Register function
+  const register = async (name, email, password) => {
+    try {
+      // Make API request to register endpoint
+      const response = await fetch('http://localhost:8001/api/v1/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw { 
+          response: { 
+            data: { message: data.message || 'Registration failed' } 
+          } 
+        };
+      }
+      
+      // Save user data and token
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
+      
+      // Update state
+      setCurrentUser(data.user);
+      
+      return { success: true, user: data.user };
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    }
+  };
+
+  // Check if user has specific role
+  const hasRole = (role) => {
+    return currentUser && currentUser.role === role;
+  };
+
+  // Value to be provided to consumers
+  const value = {
+    currentUser,
     loading,
-    error,
-    isAuthenticated: !!user,
-    isHotelOwner: user && user.role === 'hotelOwner',
-    isAdmin: user && user.role === 'admin',
-    login: handleLogin,
-    logout: handleLogout
+    login,
+    logout,
+    register,
+    isLoggedIn: !!currentUser,
+    isAdmin: hasRole('admin'),
+    isHotelOwner: hasRole('hotelOwner'),
+    isGuest: hasRole('guest')
   };
 
   return (
-    <AuthContext.Provider value={authContextValue}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export default AuthProvider;
