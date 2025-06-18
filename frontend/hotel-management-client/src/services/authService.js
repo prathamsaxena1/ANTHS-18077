@@ -3,7 +3,7 @@
  * Authentication service for handling login, signup, and token management
  */
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1';
+const API_URL = 'http://localhost:5000/api/v1';
 
 /**
  * Login user with email and password
