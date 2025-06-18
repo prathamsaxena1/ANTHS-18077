@@ -1,0 +1,337 @@
+/* pages/auth/Register.css */
+:root {
+    --primary-color: #4a6fa5;
+    --primary-hover: #3a5a8a;
+    --secondary-color: #f8f9fa;
+    --text-color: #333;
+    --text-light: #6c757d;
+    --error-color: #e53935;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --border-color: #dee2e6;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+  }
+  
+  .register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 150px); /* Adjust based on header/footer height */
+    background-color: var(--secondary-color);
+    padding: 20px;
+  }
+  
+  .register-card {
+    width: 100%;
+    max-width: 500px;
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: 40px;
+    overflow: hidden;
+  }
+  
+  .register-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .register-header h1 {
+    font-size: 2rem;
+    color: var(--text-color);
+    margin-bottom: 10px;
+  }
+  
+  .register-header p {
+    font-size: 1rem;
+    color: var(--text-light);
+  }
+  
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    width: 20px;
+    height: 20px;
+  }
+  
+  .input-wrapper input {
+    width: 100%;
+    padding: 12px 40px 12px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+  
+  .input-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+  }
+  
+  .input-wrapper input.error {
+    border-color: var(--error-color);
+  }
+  
+  .password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+  }
+  
+  .toggle-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .error-message {
+    font-size: 0.8rem;
+    color: var(--error-color);
+    margin-top: 4px;
+  }
+  
+  .password-hint {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  
+  .password-strength {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    gap: 10px;
+  }
+  
+  .strength-meter {
+    display: flex;
+    gap: 4px;
+    flex-grow: 1;
+  }
+  
+  .strength-segment {
+    height: 4px;
+    flex-grow: 1;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+  }
+  
+  .strength-segment.strength-level-1 {
+    background-color: #f44336;
+  }
+  
+  .strength-segment.strength-level-2 {
+    background-color: #ff9800;
+  }
+  
+  .strength-segment.strength-level-3 {
+    background-color: #ffc107;
+  }
+  
+  .strength-segment.strength-level-4 {
+    background-color: #8bc34a;
+  }
+  
+  .strength-segment.strength-level-5 {
+    background-color: #4caf50;
+  }
+  
+  .strength-text {
+    font-size: 0.8rem;
+    width: 80px;
+    text-align: right;
+  }
+  
+  .strength-text.strength-level-1 {
+    color: #f44336;
+  }
+  
+  .strength-text.strength-level-2 {
+    color: #ff9800;
+  }
+  
+  .strength-text.strength-level-3 {
+    color: #ffc107;
+  }
+  
+  .strength-text.strength-level-4 {
+    color: #8bc34a;
+  }
+  
+  .strength-text.strength-level-5 {
+    color: #4caf50;
+  }
+  
+  .terms-group {
+    margin: 10px 0;
+  }
+  
+  .checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .checkbox-wrapper input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    cursor: pointer;
+  }
+  
+  .checkbox-wrapper label {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    cursor: pointer;
+  }
+  
+  .checkbox-wrapper a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  .checkbox-wrapper a:hover {
+    text-decoration: underline;
+  }
+  
+  .register-button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .register-button:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .register-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .login-prompt {
+    text-align: center;
+    margin-top: 25px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+  }
+  
+  .login-prompt a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .login-prompt a:hover {
+    text-decoration: underline;
+  }
+  
+  .alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+  }
+  
+  .alert-error {
+    background-color: rgba(229, 57, 53, 0.1);
+    color: var(--error-color);
+    border: 1px solid rgba(229, 57, 53, 0.3);
+  }
+  
+  .alert-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 576px) {
+    .register-card {
+      padding: 25px;
+    }
+    
+    .register-header h1 {
+      font-size: 1.8rem;
+    }
+    
+    .checkbox-wrapper {
+      align-items: flex-start;
+    }
+    
+    .checkbox-wrapper input[type="checkbox"] {
+      margin-top: 3px;
+    }
+    
+    .password-strength {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+    
+    .strength-text {
+      width: auto;
+      text-align: left;
+    }
+  }

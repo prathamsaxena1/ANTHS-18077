@@ -4,6 +4,7 @@ import Layout from './components/Layout/Layout';
 import Home from './pages/Home/Home';
 import HotelDetail from './pages/HotelDetail/HotelDetail';
 import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
 // Import other pages...
 
 function App() {
@@ -23,10 +24,16 @@ function App() {
         } />
         <Route path="/login" element={
 
-<Layout>
-  <Login />
-</Layout>
-} />
+          <Layout>
+            <Login />
+          </Layout>
+        } />
+        <Route path="/register" element={
+
+          <Layout>
+            <Register />
+          </Layout>
+        } />
 
       </Routes>
     </Router>
