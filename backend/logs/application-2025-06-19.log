@@ -1,2 +1,4 @@
 {"level":"info","message":"You are connected to the database !","service":"hotel-api","timestamp":"2025-06-19 02:41:57"}
 {"level":"info","message":"App is listening on port 8001","service":"hotel-api","timestamp":"2025-06-19 02:41:57"}
+{"level":"info","message":"You are connected to the database !","service":"hotel-api","timestamp":"2025-06-19 18:41:27"}
+{"level":"info","message":"App is listening on port 8001","service":"hotel-api","timestamp":"2025-06-19 18:41:27"}

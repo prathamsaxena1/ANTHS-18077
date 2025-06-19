@@ -1,7 +1,6 @@
 // pages/auth/Register.jsx
 import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
 import './Register.css';
 
 const Register = () => {
@@ -20,14 +19,6 @@ const Register = () => {
   const [submitError, setSubmitError] = useState(null);
   
   const navigate = useNavigate();
-  const { register, isLoggedIn } = useContext(AuthContext);
-
-  // Redirect if already logged in
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/');
-    }
-  }, [isLoggedIn, navigate]);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -123,13 +114,6 @@ const Register = () => {
     
     try {
       setLoading(true);
-      
-      // Call register from auth context
-      const response = await register(
-        formData.name,
-        formData.email,
-        formData.password
-      );
       
       // If registration successful, redirect to home
       if (response.success) {

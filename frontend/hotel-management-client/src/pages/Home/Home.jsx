@@ -1,66 +1,38 @@
 // pages/Home/Home.jsx
-import { useState, useEffect } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
+import { useHotels } from '../../hooks/useHotels'; // Assume this hook exists based on your API structure
+import HotelCard from '../../components/HotelCard';
+import './Home.css'; // Make sure you have CSS for this component
 
 const Home = () => {
-  const [hotels, setHotels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { data: hotels, isLoading, error } = useHotels();
+  const [filteredHotels, setFilteredHotels] = useState([]);
 
+  // Update filtered hotels whenever the search term or hotels data changes
   useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('http://localhost:8001/api/v1/listing/getListings');
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch hotels');
-        }
-        
-        const data = await response.json();
-        console.log('API Response:', data); // For debugging
-        
-        // Correctly extract the listings array
-        if (data && data.listings && Array.isArray(data.listings)) {
-          setHotels(data.listings);
-        } else {
-          setHotels([]);
-          console.error('Unexpected data structure:', data);
-        }
-        
-        setLoading(false);
-      } catch (error) {
-        console.error('Fetch error:', error);
-        setError(error.message);
-        setLoading(false);
+    if (hotels) {
+      if (searchTerm.trim() === '') {
+        // If no search term, show all hotels
+        setFilteredHotels(hotels);
+      } else {
+        // Filter hotels based on search term (case insensitive)
+        const results = hotels.filter(hotel => 
+          hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredHotels(results);
       }
-    };
+    }
+  }, [searchTerm, hotels]);
 
-    fetchHotels();
-  }, []);
+  // Handle search input changes
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-  if (loading) {
-    return
-<div>
-Loading hotels...
-
-</div>
-;
-}
-
-if (error) {
-return
-
-<div>
-Error: {error}
-
-</div>
-;
-}
-
-return (
-
+  return (
 <div>
   <section className="hero-section">
     <div className="hero-content">
@@ -69,92 +41,58 @@ Find Your Perfect Stay
 
 </h1>
 <p>
-Browse our collection of premium hotels for your next destination
+Discover hotels for every need and budget
 
 </p>
-<Link>
-Browse All Hotels
-
-</Link>
+      {/* Search Input */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search hotels by name..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="search-input"
+          aria-label="Search hotels"
+        />
 </div>
+      {/* Search results count */}
+      {hotels && searchTerm && (
+<p>
+          Found {filteredHotels.length} hotel{filteredHotels.length !== 1 ? 's' : ''}
+</p>
+      )}
+    </div>
   </section>
 <section>
 <h2>
 Featured Hotels
 
 </h2>
-<div>
-      {hotels.length === 0 ? (
+    {isLoading &&
 <p>
-No hotels available at the moment.
+Loading hotels...
 
 </p>
-      ) : (
-        hotels.map((hotel) => (
-          <div className="hotel-card" key={hotel._id}>
-            <div className="hotel-image">
-              {hotel.imageUrls && hotel.imageUrls.length > 0 ? (
-                <img 
-                  src={hotel.imageUrls[0]} 
-                  alt={hotel.name} 
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/placeholder-hotel.jpg";
-                  }}
-                />
-              ) : (
-<img src="/placeholder-hotel.jpg" alt="Placeholder" />
-              )}
-</div>
-<div>
-<h3>
-{hotel.name}
+}
+{error &&
 
-</h3>
 <p>
-{hotel.description?.substring(0, 100)}...
+Error loading hotels: {error.message}
 
 </p>
+}
+
+    {!isLoading && !error && filteredHotels.length === 0 && (
 <p>
-{hotel.address}
+No hotels found matching "{searchTerm}"
 
 </p>
-              <div className="hotel-details">
-                {hotel.parking && (
-<span>
-Parking Available
-
-</span>
-                )}
-</div>
+    )}
 <div>
-                {hotel.discountPrice && hotel.discountPrice < hotel.regularPrice ? (
-                  <>
-<span>
-${hotel.regularPrice}
-
-</span>
-<span>
-${hotel.discountPrice}
-
-</span>
-                  </>
-                ) : (
-<span>
-${hotel.regularPrice}/night
-
-</span>
-                )}
+      {filteredHotels.map(hotel => (
+<HotelCard key={hotel._id} hotel={hotel} />
+      ))}
 </div>
-<Link>
-View Details
-
-</Link>
-            </div>
-          </div>
-        ))
-      )}
-    </div>
 </section>
 </div>
 );
