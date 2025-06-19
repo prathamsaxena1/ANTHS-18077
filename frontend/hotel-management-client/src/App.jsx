@@ -5,6 +5,7 @@ import Home from './pages/Home/Home';
 import HotelDetail from './pages/HotelDetail/HotelDetail';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
+import UserProfile from './pages/Profile/UserProfile';
 // Import other pages...
 
 function App() {
@@ -32,6 +33,12 @@ function App() {
 
           <Layout>
             <Register />
+          </Layout>
+        } />
+        <Route path="/user" element={
+
+          <Layout>
+            <UserProfile />
           </Layout>
         } />
 
