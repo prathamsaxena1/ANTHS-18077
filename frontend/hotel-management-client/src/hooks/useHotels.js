@@ -1,10 +1,10 @@
-// hooks/useHotels.js
+// src/hooks/useHotels.js
 
 import { useState, useEffect } from 'react';
 import { api } from '../utils/api';
 
 export const useHotels = (options = {}) => {
-  const [data, setData] = useState(null);
+  const [hotels, setHotels] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -12,18 +12,37 @@ export const useHotels = (options = {}) => {
     const fetchHotels = async () => {
       try {
         setIsLoading(true);
-        const response = await api.get('/hotels', { params: options });
-        setData(response.data.data);
+        const response = await api.listing.getAll(options);
+        // Check if response has the expected structure
+        if (response.data) {
+          setHotels(response.data.listings);
+          console.log(response.data)
+        } else if (response.data) {
+          // Handle case where data might be at the top level
+          setHotels(response.data);
+        } else {
+          // Fallback for unexpected response structure
+          console.warn('Unexpected API response structure:', response);
+          setHotels([]);
+        }
         setError(null);
       } catch (err) {
-        setError(err.response?.data || { message: 'Failed to fetch hotels' });
+        console.error('Error fetching hotels:', err);
+        setError(err.response?.data?.message || 'Failed to fetch hotels');
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchHotels();
-  }, [options.page, options.limit, options.sort]); // Re-fetch when these params change
+  }, [
+    // Add dependencies based on the options you pass
+    options.page, 
+    options.limit, 
+    options.sort,
+    // Stringify any object params to avoid unnecessary re-renders
+    JSON.stringify(options.filters)
+  ]); 
 
-  return { data, isLoading, error };
+  return { hotels, isLoading, error };
 };

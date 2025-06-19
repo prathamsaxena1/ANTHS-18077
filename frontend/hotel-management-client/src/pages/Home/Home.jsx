@@ -1,19 +1,19 @@
-// pages/Home/Home.jsx
+// src/pages/Home/Home.jsx
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useHotels } from '../../hooks/useHotels'; // Assume this hook exists based on your API structure
+import { useHotels } from '../../hooks/useHotels';
 import HotelCard from '../../components/HotelCard';
-import './Home.css'; // Make sure you have CSS for this component
+import './Home.css';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { data: hotels, isLoading, error } = useHotels();
+  const { hotels, isLoading, error } = useHotels();
   const [filteredHotels, setFilteredHotels] = useState([]);
 
   // Update filtered hotels whenever the search term or hotels data changes
   useEffect(() => {
-    if (hotels) {
+    if (hotels && hotels.length > 0) {
       if (searchTerm.trim() === '') {
         // If no search term, show all hotels
         setFilteredHotels(hotels);
@@ -24,6 +24,8 @@ const Home = () => {
         );
         setFilteredHotels(results);
       }
+    } else {
+      setFilteredHotels([]);
     }
   }, [searchTerm, hotels]);
 
@@ -56,7 +58,7 @@ Discover hotels for every need and budget
         />
 </div>
       {/* Search results count */}
-      {hotels && searchTerm && (
+      {hotels && hotels.length > 0 && searchTerm && (
 <p>
           Found {filteredHotels.length} hotel{filteredHotels.length !== 1 ? 's' : ''}
 </p>
@@ -77,20 +79,27 @@ Loading hotels...
 {error &&
 
 <p>
-Error loading hotels: {error.message}
+Error loading hotels: {error}
 
 </p>
 }
 
-    {!isLoading && !error && filteredHotels.length === 0 && (
+    {!isLoading && !error && filteredHotels.length === 0 && searchTerm && (
 <p>
 No hotels found matching "{searchTerm}"
 
 </p>
     )}
+    
+    {!isLoading && !error && hotels && hotels.length === 0 && !searchTerm && (
+<p>
+No hotels available at the moment.
+
+</p>
+    )}
 <div>
       {filteredHotels.map(hotel => (
-<HotelCard key={hotel._id} hotel={hotel} />
+<HotelCard key={hotel._id} hotel={hotel} searchTerm={searchTerm} />
       ))}
 </div>
 </section>
