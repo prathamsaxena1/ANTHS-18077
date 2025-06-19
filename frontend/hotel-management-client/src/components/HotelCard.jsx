@@ -1,7 +1,8 @@
-// src/components/HotelCard.jsx
+// components/HotelCard.jsx
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './HotelCard.css';
 
 const HotelCard = ({ hotel, searchTerm = '' }) => {
   // Function to safely access nested properties
@@ -36,11 +37,21 @@ const minPrice = safelyGetNestedProp(hotel, 'priceRange.min', 0);
 const maxPrice = safelyGetNestedProp(hotel, 'priceRange.max', 0);
 const imageUrl = safelyGetNestedProp(hotel, 'imageUrl', '/default-hotel.jpg');
 const id = safelyGetNestedProp(hotel, '_id', '');
+const rating = safelyGetNestedProp(hotel, 'rating', null);
+
+// Get amenities if available
+const amenities = safelyGetNestedProp(hotel, 'amenities', []);
+// Take only first 3 amenities to display
+const displayAmenities = amenities.slice(0, 3);
 
 return (
 
 <div>
-  <div className="hotel-card-image">
+  {rating && <div className="hotel-rating">{rating}/5
+</div>
+}
+
+<div>
 <img src={imageUrl} alt={name} />
 </div>
 <div>
@@ -51,7 +62,18 @@ return (
 {city}, {country}
 
 </p>
-    <div className="hotel-price">
+    {displayAmenities.length > 0 && (
+      <div className="hotel-amenities">
+        {displayAmenities.map((amenity, index) => (
+<span>
+{amenity}
+
+</span>
+        ))}
+</div>
+    )}
+<div>
+      <div>
 <span>
 ${minPrice} - ${maxPrice}
 
@@ -61,6 +83,7 @@ per night
 
 </span>
 </div>
+    </div>
 <Link>
       View Details
 </Link>

@@ -1,8 +1,8 @@
-// src/pages/Home/Home.jsx
+// pages/Home/Home.jsx
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useHotels } from '../../hooks/useHotels';
+import { useHotels } from '../../hooks/useHotels'; // Custom hook to fetch hotels
 import HotelCard from '../../components/HotelCard';
 import './Home.css';
 

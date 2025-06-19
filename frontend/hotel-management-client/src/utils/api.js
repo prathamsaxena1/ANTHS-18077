@@ -8,12 +8,13 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // 15 seconds timeout
+  timeout: 10000, // 10 seconds timeout
 });
 
-// Request interceptor to add auth token
+// Request interceptor for adding auth token
 apiClient.interceptors.request.use(
   (config) => {
+    // Get token from local storage if it exists
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -25,141 +26,59 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor for handling errors
+// Response interceptor for handling common errors
 apiClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Add specific error handling here
+    // Handle specific error cases
+    if (error.response) {
+      // Server responded with an error status code
+      if (error.response.status === 401) {
+        // Token expired or invalid - could trigger logout here
+        localStorage.removeItem('token');
+        // You might want to redirect to login page
+        // Example: window.location.href = '/login';
+      }
+    } else if (error.request) {
+      // Request was made but no response received (network issue)
+      console.error('Network error. Please check your connection.');
+    } else {
+      // Something else happened while setting up the request
+      console.error('Error creating request:', error.message);
+    }
     return Promise.reject(error);
   }
 );
 
-// Helper function to build query params from filters
-const buildListingQueryParams = (filters = {}) => {
-  const params = {};
-  
-  // Text search
-  if (filters.search) {
-    params.search = filters.search;
-  }
-  
-  // Price range
-  if (filters.minPrice !== undefined && filters.minPrice !== '') {
-    params.minPrice = filters.minPrice;
-  }
-  if (filters.maxPrice !== undefined && filters.maxPrice !== '') {
-    params.maxPrice = filters.maxPrice;
-  }
-  
-  // Bedrooms range
-  if (filters.minBedrooms !== undefined && filters.minBedrooms !== '') {
-    params.minBedrooms = filters.minBedrooms;
-  }
-  if (filters.maxBedrooms !== undefined && filters.maxBedrooms !== '') {
-    params.maxBedrooms = filters.maxBedrooms;
-  }
-  
-  // Bathrooms range
-  if (filters.minBathrooms !== undefined && filters.minBathrooms !== '') {
-    params.minBathrooms = filters.minBathrooms;
-  }
-  if (filters.maxBathrooms !== undefined && filters.maxBathrooms !== '') {
-    params.maxBathrooms = filters.maxBathrooms;
-  }
-  
-  // Boolean filters - only include if specifically set to true or false
-  if (filters.furnished !== null && filters.furnished !== undefined) {
-    params.furnished = filters.furnished;
-  }
-  if (filters.parking !== null && filters.parking !== undefined) {
-    params.parking = filters.parking;
-  }
-  
-  // Status filter (isSold)
-  // If isSold is false, we're filtering to only show available listings
-  if (filters.isSold === false) {
-    params.isSold = false;
-  }
-  // If isSold is true, we're not filtering by status, so we don't add it to params
-  
-  // Date filters
-  if (filters.createdAfter) {
-    params.createdAfter = filters.createdAfter instanceof Date 
-      ? filters.createdAfter.toISOString() 
-      : filters.createdAfter;
-  }
-  if (filters.createdBefore) {
-    params.createdBefore = filters.createdBefore instanceof Date 
-      ? filters.createdBefore.toISOString() 
-      : filters.createdBefore;
-  }
-  if (filters.updatedAfter) {
-    params.updatedAfter = filters.updatedAfter instanceof Date 
-      ? filters.updatedAfter.toISOString() 
-      : filters.updatedAfter;
-  }
-  if (filters.updatedBefore) {
-    params.updatedBefore = filters.updatedBefore instanceof Date 
-      ? filters.updatedBefore.toISOString() 
-      : filters.updatedBefore;
-  }
-  
-  // Owner search
-  if (filters.ownerSearch) {
-    params.ownerSearch = filters.ownerSearch;
-  }
-  
-  // Pagination
-  if (filters.page) {
-    params.page = filters.page;
-  }
-  if (filters.limit) {
-    params.limit = filters.limit;
-  }
-  
-  // Sorting
-  if (filters.sort) {
-    const [field, direction] = filters.sort.split('_');
-    params.sortField = field;
-    params.sortOrder = direction;
-  }
-  
-  return params;
-};
-
-// API service with methods for interacting with backend
+// Define API service methods
 const api = {
+  // Auth endpoints
   auth: {
-    // Auth methods
     login: (credentials) => apiClient.post('auth/login', credentials),
     register: (userData) => apiClient.post('auth/register', userData),
     logout: () => apiClient.post('auth/logout'),
     getProfile: () => apiClient.get('auth/me'),
+    updateProfile: (data) => apiClient.put('auth/update-profile', data),
   },
   
-  listings: {
-    // Get all listings with optional filters
-    getAll: (filters = {}) => {
-      const params = buildListingQueryParams(filters);
-      return apiClient.get('listing/getListings', { params });
-    },
-    
-    // Get a listing by ID
+  // Hotel listing endpoints
+  listing: {
+    getAll: (params = {}) => apiClient.get('listing/getListings', { params }),
     getById: (id) => apiClient.get(`listing/${id}`),
-    
-    // Create a new listing
-    create: (listingData) => apiClient.post('listing/create', listingData),
-    
-    // Update a listing
-    update: (id, listingData) => apiClient.put(`listing/${id}`, listingData),
-    
-    // Delete a listing
+    create: (hotelData) => apiClient.post('listing/create', hotelData),
+    update: (id, hotelData) => apiClient.put(`listing/${id}`, hotelData),
     delete: (id) => apiClient.delete(`listing/${id}`),
-    
-    // Get owner's listings
-    getMyListings: () => apiClient.get('listing/my-listings'),
+  },
+  
+  // Other API endpoints can be organized here
+  bookings: {
+    // Implement booking-related API calls
+  },
+  
+  reviews: {
+    // Implement review-related API calls
   },
 };
 
