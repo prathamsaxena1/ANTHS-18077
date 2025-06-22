@@ -1,10 +1,11 @@
 node_modules
 npm-debug.log
-.git
 .env
 .env.*
-.DS_Store
-.vscode
-coverage
-*.md
-!README.md
+.git
+.gitignore
+docker-compose*
+Dockerfile
+README.md
+tests/
+coverage/
