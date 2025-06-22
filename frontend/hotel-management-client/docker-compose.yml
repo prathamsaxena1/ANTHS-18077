@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongo:
+    image: mongo:latest
+    container_name: hotel-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - hotel-network
+    # Set environment variables for root user
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=hotelmanagement
+
+  # Backend API Service
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: hotel-backend
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/hotelmanagement?authSource=admin
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRE=${JWT_EXPIRE}
+      - PORT=8001
+      - CLIENT_URL=http://localhost:3000
+    volumes:
+      # Mount source code for development
+      - ./server:/usr/src/app
+      # Don't mount node_modules from host
+      - /usr/src/app/node_modules
+    depends_on:
+      - mongo
+    networks:
+      - hotel-network
+    command: npm run dev  # Use nodemon in development
+
+  # Frontend React Service
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client.dev
+    container_name: hotel-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8001/api/v1
+    volumes:
+      # Mount source code for development
+      - ./client:/app
+      # Don't mount node_modules from host
+      - /app/node_modules
+    depends_on:
+      - server
+    networks:
+      - hotel-network
+    # Use this command for React development server
+    command: npm start
+
+networks:
+  hotel-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
