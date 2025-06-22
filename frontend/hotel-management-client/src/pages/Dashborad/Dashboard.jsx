@@ -1,162 +1,108 @@
-// src/pages/Dashboard/Dashboard.jsx
-import React, { useState, useEffect } from 'react';
+// pages/Dashboard/Dashboard.jsx
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const [hotels, setHotels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchHotelListings = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch hotels owned by the current user
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/hotels/my-hotels`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to fetch your hotels');
-        }
-        
-        setHotels(data.data || []);
-      } catch (err) {
-        console.error('Error fetching hotels:', err);
-        setError(err.message || 'Failed to load your hotel listings');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchHotelListings();
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData) {
+      setUser(userData);
+    }
   }, []);
 
-  const handleAddHotel = () => {
-    navigate('/dashboard/create-hotel');
-  };
+  const isHotelOwner = user?.role === 'hotelOwner' || user?.role === 'admin';
 
-  if (loading) {
-    return (
+  return (
 <div>
-    <div className="dashboard-loading">
-      <div className="spinner">
-</div>
-<p>
-Loading your hotels...
-
-</p>
-    </div>
-  </div>
-);
-}
-
-return (
-
-<div>
-  <div className="dashboard-header">
-    <div className="dashboard-welcome">
 <h1>
-Hotel Owner Dashboard
+Dashboard
 
 </h1>
-<p>
-Welcome back, {user?.name}!
-
-</p>
-</div>
-<button>
-      Add New Hotel
-</button>
-  </div>
-  
-  {!error && hotels.length === 0 ? (
-<div>
-      <div className="empty-state-icon">🏨
-</div>
+  <div className="welcome-section">
 <h2>
-No Hotels Yet
+Welcome, {user?.name || 'Guest'}!
 
 </h2>
 <p>
-You haven't added any hotel listings yet. Get started by adding your first property!
+Manage your account, hotels, and bookings from this dashboard.
 
 </p>
-<button>
-        Add Your First Hotel
-</button>
-    </div>
-  ) : (
-<div>
-<h2>
-Your Hotels ({hotels.length})
-
-</h2>
-      <div className="hotel-grid">
-        {hotels.map(hotel => (
-          <div className="hotel-card" key={hotel._id}>
-            <div className="hotel-card-image">
-              {hotel.images && hotel.images.length > 0 ? (
-<img src={hotel.images[0]} alt={hotel.name} />
-              ) : (
-                <div className="placeholder-image">No Image
 </div>
-              )}
-            </div>
 <div>
+    {isHotelOwner && (
+      <div className="dashboard-card">
+        <div className="card-icon hotel-icon">🏨
+</div>
 <h3>
-{hotel.name}
+My Hotels
 
 </h3>
 <p>
-                {hotel.address.city}, {hotel.address.country}
+Manage your hotel listings, add new properties, and update details.
+
 </p>
-              <div className="hotel-metrics">
-                <div className="metric">
-<span>
-${hotel.priceRange?.min || 0}
-
-</span>
-<span>
-Starting Price
-
-</span>
-</div>
-<div>
-<span>
-                    {hotel.bookings?.length || 0}
-</span>
-<span>
-Bookings
-
-</span>
-</div>
-              </div>
-            </div>
-<div>
 <Link>
-                View Details
+View My Hotels
+
 </Link>
-<Link>
-                Edit
-</Link>
-</div>
-          </div>
-        ))}
       </div>
+    )}
+<div>
+      <div className="card-icon booking-icon">📅
+</div>
+<h3>
+My Bookings
+
+</h3>
+<p>
+View and manage your upcoming and past bookings.
+
+</p>
+<Link>
+View Bookings
+
+</Link>
     </div>
-  )}
+<div>
+      <div className="card-icon profile-icon">👤
+</div>
+<h3>
+Profile Settings
+
+</h3>
+<p>
+Update your personal information, change password, and manage preferences.
+
+</p>
+<Link>
+Manage Profile
+
+</Link>
+    </div>
+    
+    {isHotelOwner && (
+<div>
+        <div className="card-icon add-icon">➕
+</div>
+<h3>
+Add New Hotel
+
+</h3>
+<p>
+List a new property on our platform and start receiving bookings.
+
+</p>
+<Link>
+Add Hotel
+
+</Link>
+      </div>
+    )}
+  </div>
 </div>
 );
 };

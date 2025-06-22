@@ -6,6 +6,7 @@ import HotelDetail from './pages/HotelDetail/HotelDetail';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import UserProfile from './pages/Profile/UserProfile';
+import EditHotel from './pages/Dashborad/EditHotel';
 // Import other pages...
 
 function App() {
@@ -39,6 +40,12 @@ function App() {
 
           <Layout>
             <UserProfile />
+          </Layout>
+        } />
+        <Route path="/edithotel" element={
+
+          <Layout>
+            <EditHotel />
           </Layout>
         } />
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useUserProfile } from '../../hooks/useUserProfile';
-import HotelCard from '../../components/HotelCard'; // Reuse your existing hotel card component
+import HotelCard from '../../components/HotelCard';
 import './UserProfile.css';
 
 const UserProfile = () => {
@@ -88,16 +88,6 @@ return (
 <div>
   {/* User Profile Header */}
   <div className="profile-header">
-    <div className="profile-avatar">
-      {userProfile.avatar ? (
-<img src={userProfile.avatar} alt={${userProfile.name}'s avatar} />
-
-      ) : (
-        <div className="avatar-placeholder">
-          {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : 'U'}
-</div>
-      )}
-    </div>
 <div>
 <h1>
 {userProfile.name}
@@ -107,14 +97,15 @@ return (
 {userProfile.email}
 
 </p>
+      {userProfile.role && (
 <p>
-        {userProfile.role && (
 <span>
 {userProfile.role}
 
 </span>
-        )}
 </p>
+      )}
+      
       <div className="profile-stats">
         <div className="stat-item">
 <span>
