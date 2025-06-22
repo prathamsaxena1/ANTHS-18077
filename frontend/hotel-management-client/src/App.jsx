@@ -7,6 +7,9 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import UserProfile from './pages/Profile/UserProfile';
 import EditHotel from './pages/Dashborad/EditHotel';
+import AvailableHotels from './pages/AvailableHotels/AvailableHotels';
+import NotFoundPage from './pages/ErrorPages/NotFoundPage';
+import UnauthorizedPage from './pages/ErrorPages/UnauthorizedPage';
 // Import other pages...
 
 function App() {
@@ -53,6 +56,14 @@ function App() {
           <Layout>
             <AvailableHotels />
           </Layout>
+        } />
+        <Route path="/404" element={
+
+            <NotFoundPage />
+        } />
+        <Route path="/unautrorized" element={
+
+            <UnauthorizedPage />
         } />
 
       </Routes>
