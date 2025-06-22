@@ -1,62 +1,39 @@
 // src/services/api.js
-import config from '../config';
+import axios from 'axios';
+import config from '../utils/config';
 
-const createApiService = () => {
-  // Base headers for all requests
-  const headers = {
-    'Content-Type': 'application/json'
-  };
+const apiClient = axios.create({
+  baseURL: config.api.baseURL,
+  timeout: config.api.timeout,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-  const get = async (endpoint) => {
-    try {
-      const response = await fetch(`${config.apiUrl}${endpoint}`, {
-        method: 'GET',
-        headers
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error(`Error fetching ${endpoint}:`, error);
-      throw error;
+// Request interceptor for adding auth token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('hotel_auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  };
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-  const post = async (endpoint, data) => {
-    try {
-      const response = await fetch(`${config.apiUrl}${endpoint}`, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(data)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-      
-      return await response.json();
-    } catch (error) {
-      console.error(`Error posting to ${endpoint}:`, error);
-      throw error;
+// Response interceptor for error handling
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Handle API errors, authentication errors, etc.
+    if (error.response && error.response.status === 401) {
+      // Handle unauthorized access
+      localStorage.removeItem('hotel_auth_token');
+      window.location.href = '/login';
     }
-  };
+    return Promise.reject(error);
+  }
+);
 
-  // Add other methods like PUT, DELETE, etc.
-  
-  return {
-    get,
-    post,
-    // Additional methods here
-    
-    // Convenience methods for specific API endpoints
-    getHotels: () => get(config.endpoints.hotels),
-    getHotel: (id) => get(`${config.endpoints.hotels}/${id}`),
-    login: (credentials) => post(config.endpoints.login, credentials),
-    register: (userData) => post(config.endpoints.register, userData)
-  };
-};
-
-export default createApiService();
+export default apiClient;
