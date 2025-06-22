@@ -1,108 +1,156 @@
 // pages/Home/Home.jsx
-
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useHotels } from '../../hooks/useHotels'; // Custom hook to fetch hotels
+import { useState, useEffect, useRef, useCallback } from 'react';
+import axios from 'axios';
 import HotelCard from '../../components/HotelCard';
 import './Home.css';
 
 const Home = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const { hotels, isLoading, error } = useHotels();
-  const [filteredHotels, setFilteredHotels] = useState([]);
-
-  // Update filtered hotels whenever the search term or hotels data changes
+  const [hotels, setHotels] = useState([]);
+  const [visibleHotels, setVisibleHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const observer = useRef();
+  const ITEMS_PER_PAGE = 8; // Number of hotels to load each time
+  
+  // Fetch hotels data
   useEffect(() => {
-    if (hotels && hotels.length > 0) {
-      if (searchTerm.trim() === '') {
-        // If no search term, show all hotels
-        setFilteredHotels(hotels);
-      } else {
-        // Filter hotels based on search term (case insensitive)
-        const results = hotels.filter(hotel => 
-          hotel.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredHotels(results);
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('http://localhost:8001/api/v1/listing/getListings');
+        
+        // Filter out sold hotels
+        const availableHotels = response.data.listings.filter(hotel => !hotel.isSold);
+        setHotels(availableHotels);
+        
+        // Set initial batch of visible hotels
+        setVisibleHotels(availableHotels.slice(0, ITEMS_PER_PAGE));
+        setLoading(false);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Failed to load hotels');
+        setLoading(false);
       }
+    };
+
+    fetchHotels();
+  }, []);
+
+  // Load more hotels when scrolling to the last element
+  const loadMoreHotels = useCallback(() => {
+    if (loading) return;
+    
+    const nextPage = page + 1;
+    const startIndex = page * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const newHotels = hotels.slice(startIndex, endIndex);
+    
+    if (newHotels.length > 0) {
+      setVisibleHotels(prev => [...prev, ...newHotels]);
+      setPage(nextPage);
     } else {
-      setFilteredHotels([]);
+      setHasMore(false);
     }
-  }, [searchTerm, hotels]);
+  }, [loading, page, hotels]);
 
-  // Handle search input changes
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  // Setup the intersection observer
+  const lastHotelElementRef = useCallback(node => {
+    if (loading) return;
+    
+    // Disconnect previous observer if it exists
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    
+    // Create a new observer
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadMoreHotels();
+      }
+    }, {
+      rootMargin: '100px' // Load more hotels when last card is 100px from viewport
+    });
+    
+    // Observe the last element
+    if (node) {
+      observer.current.observe(node);
+    }
+  }, [loading, hasMore, loadMoreHotels]);
 
-  return (
+  if (error) {
+    return (
 <div>
-  <section className="hero-section">
-    <div className="hero-content">
+<h2>
+Error loading hotels
+
+</h2>
+<p>
+{error}
+
+</p>
+</div>
+);
+}
+
+return (
+
+<div>
+  <div className="hero-section">
 <h1>
 Find Your Perfect Stay
 
 </h1>
 <p>
-Discover hotels for every need and budget
+Discover amazing hotels for your next trip
 
 </p>
-      {/* Search Input */}
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search hotels by name..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="search-input"
-          aria-label="Search hotels"
-        />
+    {/* Search bar or additional content can go here */}
 </div>
-      {/* Search results count */}
-      {hotels && hotels.length > 0 && searchTerm && (
-<p>
-          Found {filteredHotels.length} hotel{filteredHotels.length !== 1 ? 's' : ''}
-</p>
-      )}
-    </div>
-  </section>
-<section>
+<div>
 <h2>
-Featured Hotels
+Popular Hotels
 
 </h2>
-    {isLoading &&
+    <div className="hotels-grid">
+      {visibleHotels.map((hotel, index) => {
+        // Add reference to the last hotel element
+        if (visibleHotels.length === index + 1) {
+          return (
+            <div ref={lastHotelElementRef} key={hotel._id}>
+<HotelCard hotel={hotel} />
+</div>
+          );
+        } else {
+          return (
+<div>
+<HotelCard hotel={hotel} />
+</div>
+          );
+        }
+      })}
+    </div>
+    
+    {loading && (
+<div>
+        <div className="loading-spinner">
+</div>
 <p>
 Loading hotels...
 
 </p>
-}
-{error &&
-
-<p>
-Error loading hotels: {error}
-
-</p>
-}
-
-    {!isLoading && !error && filteredHotels.length === 0 && searchTerm && (
-<p>
-No hotels found matching "{searchTerm}"
-
-</p>
+      </div>
     )}
     
-    {!isLoading && !error && hotels && hotels.length === 0 && !searchTerm && (
+    {!loading && !hasMore && (
+<div>
 <p>
-No hotels available at the moment.
+You've seen all available hotels
 
 </p>
-    )}
-<div>
-      {filteredHotels.map(hotel => (
-<HotelCard key={hotel._id} hotel={hotel} searchTerm={searchTerm} />
-      ))}
 </div>
-</section>
+    )}
+  </div>
 </div>
 );
 };
