@@ -22,7 +22,7 @@ const EditHotel = () => {
       max: ''
     },
     amenities: []
-  });
+  }); 
   
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
