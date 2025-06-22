@@ -7,6 +7,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import UserProfile from './pages/Profile/UserProfile';
 import EditHotel from './pages/Dashborad/EditHotel';
+import AvailableHotels from './pages/AvailableHotels/AvailableHotels';
 // Import other pages...
 
 function App() {
@@ -46,6 +47,12 @@ function App() {
 
           <Layout>
             <EditHotel />
+          </Layout>
+        } />
+        <Route path="/availableHotels" element={
+
+          <Layout>
+            <AvailableHotels />
           </Layout>
         } />
 
